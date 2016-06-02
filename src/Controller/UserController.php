@@ -17,7 +17,7 @@ use App\Model\Table;
 class UserController extends AppController{
     
     public function getTableObj() {
-        
+        return new Table\UserTable();
     }
     
     public function test() {
@@ -32,8 +32,15 @@ class UserController extends AppController{
             $parameter = $this->request->data;
             $email = $parameter['email'];
             $password = $parameter['password'];
-            
-            $this->response->body(json_encode($parameter));
+            $pwd = $this->getTableObj()->getCredential($email);
+            if($password == $pwd){
+                $data['error'] =0;
+                $data['login'] = 'success';
+            }else{
+                 $data['error'] =1;
+                $data['login'] = 'fail';
+            }
+            $this->response->body(json_encode($data));
         }else{
              $data['code'] = 1;
         $data['msg'] = 'invalid request';
