@@ -8,13 +8,14 @@
 
 namespace App\Controller;
 use App\Model\Table;
+use App\Dto;
 
 /**
  * Description of UserController
  *
  * @author niteen
  */
-class UserController extends AppController{
+class UserController extends ApiController{
     
     public function getTableObj() {
         return new Table\UserTable();
@@ -26,37 +27,34 @@ class UserController extends AppController{
         $data['msg'] = 'Route Access';
         $this->response->body(json_encode($data));
     }
-    public function login() {
+    public function login($credential) {
         $this->autoRender = FALSE;
-        if($this->request->is('post')){
-            $parameter = $this->request->data;
-            $email = $parameter['email'];
-            $password = $parameter['password'];
-            $pwd = $this->getTableObj()->getCredential($email);
-            if($password == $pwd){
-                $data['error'] =0;
-                $data['login'] = 'success';
-            }else{
-                 $data['error'] =1;
-                $data['login'] = 'fail';
+           $pwd = $this->getTableObj()->getCredential($credential->email);
+            if($credential->password == $pwd){
+            
+                return true;
             }
-            $this->response->body(json_encode($data));
+            return FALSE;
+    }
+    
+    public function register($register) {
+        $this->autoRender = FALSE;
+        if($this->getTableObj()->is_present($register->email)){
+            return $this->passwordRecovery(Dto\ErrorDto::prepareError(102));
         }else{
-             $data['code'] = 1;
-        $data['msg'] = 'invalid request';
-        $this->response->body(json_encode($data));
+          
+            
         }
     }
     
-    public function register() {
+    public function passwordRecovery() {
         $this->autoRender = FALSE;
         if($this->request->is('post')){
-            $parameter = $this->request->data;
-            $this->response->body(json_encode($parameter));
-        }else{
-             $data['code'] = 1;
-        $data['msg'] = 'invalid request';
-        $this->response->body(json_encode($data));
+            
+            
+            
+            
+            
         }
     }
     

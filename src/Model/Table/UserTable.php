@@ -56,4 +56,21 @@ class UserTable extends Table{
         }
         return $result;
     }
+    
+    public function insert($userId,$register) {
+        $Obj = $this->connect();
+        $newEntity = $Obj->newEntity();
+        $newEntity->UserId = $userId;
+        $newEntity->UserEmail = $register->email;
+        $newEntity->Pwd = $register->password;
+        $newEntity->FirstName = $register->fname;
+        $newEntity->LastName = $register->lfname;
+        $newEntity->Phone = $register->phone;
+        $newEntity->CreatedDate = date(DATE_TIME_FORMAT);
+        $newEntity->RoleId = 1;
+        $newEntity->Active = 1;
+        
+    }
+    
+    
 }

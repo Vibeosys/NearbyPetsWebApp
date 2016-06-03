@@ -12,7 +12,7 @@ use App\Model\Table;
  *
  * @author niteen
  */
-class RoleController extends AppController{
+class RoleController extends ApiController{
     
     
     public function getRole() {

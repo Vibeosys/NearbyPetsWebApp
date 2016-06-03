@@ -6,18 +6,18 @@
  * and open the template in the editor.
  */
 
+namespace App\Dto\DownloadDto;
+
 /**
- * Description of RoleDownloadDto
+ * Description of SliderImagesDownloadDto
  *
  * @author niteen
  */
-class RoleDownloadDto {
-   
-    public $roleId;
-    public $role;
+class SliderImagesDownloadDto {
+
+    public $url;
     
-    public function __construct($roleId = null, $role=null) {
-        $this->roleId = $roleId;
-        $this->role = $role;
+    public function __construct($url = null) {
+        $this->url = $url;
     }
 }
