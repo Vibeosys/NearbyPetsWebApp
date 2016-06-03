@@ -40,15 +40,15 @@ class ErrorDto {
     protected $errorDictionary = [
         404 => 'You are not autorised',
         101 => 'Login Failed',
-        102 => 'UserId not found in database or RestaurantId not valid',
-        103 => 'Update not found',
+        102 => 'Sorry..!Duplicate email.',
+        103 => 'Sorry..!Registration Failed.',
         104 => 'Invalid request',
         105 => 'Error to Place order',
         106 => 'Orders Not FulFilled for requested customer',
        ];
     protected $SuccessDictionary = [
         1 => 'Login Success',
-        2 => 'Please Check UserId and RestaurantId',
+        2 => 'Congrasts..!You are register with us.',
         3 => 'UserId not found in database or RestaurantId not valid',
         4 => 'Update not found',
         5 => 'Invalid request',

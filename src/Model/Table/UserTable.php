@@ -64,12 +64,15 @@ class UserTable extends Table{
         $newEntity->UserEmail = $register->email;
         $newEntity->Pwd = $register->password;
         $newEntity->FirstName = $register->fname;
-        $newEntity->LastName = $register->lfname;
+        $newEntity->LastName = $register->lname;
         $newEntity->Phone = $register->phone;
         $newEntity->CreatedDate = date(DATE_TIME_FORMAT);
         $newEntity->RoleId = 1;
         $newEntity->Active = 1;
-        
+        if($Obj->save($newEntity)){
+            return true;
+        }
+        return FALSE;
     }
     
     

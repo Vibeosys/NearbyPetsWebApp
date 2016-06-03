@@ -40,11 +40,15 @@ class UserController extends ApiController{
     public function register($register) {
         $this->autoRender = FALSE;
         if($this->getTableObj()->is_present($register->email)){
-            return $this->passwordRecovery(Dto\ErrorDto::prepareError(102));
-        }else{
-          
-            
+            return $this->prepareResponse(Dto\ErrorDto::prepareError(102));
         }
+        $userId = $this->guidGenerator();
+        $result = $this->getTableObj()->insert($userId, $register);
+        if($result){
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(2));
+        }
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(103));
+        
     }
     
     public function passwordRecovery() {

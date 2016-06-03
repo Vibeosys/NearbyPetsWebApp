@@ -31,6 +31,23 @@ class UploadController extends Apicontroller{
                     $data[1] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
                     $data[2] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
                     $data[3] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[4] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[5] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[6] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[7] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[8] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[9] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[10] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[11] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[12] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[13] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[14] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[15] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[16] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[17] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[18] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[19] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
+                    $data[20] = new DownloadDto\ProductListDownloadDto("parret", 'He can Talk', 20, 5, 'http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
                     $response = $this->prepareResponse($data);
                     $this->response->body($response);
                     break;
@@ -73,7 +90,8 @@ class UploadController extends Apicontroller{
                        break;
                     case $this->apiOperation['UR']:
                         $register = UploadDto\RegistrationUploadDto::Deserialize($row->operationData);
-                        $result = $this->register($register);
+                         $userController = new UserController();
+                        $result = $userController->register($register);
                         $this->response->body($result);
                         break;
             }
@@ -83,6 +101,7 @@ class UploadController extends Apicontroller{
     
     
     private function register($register) {
-        
+        $userController = new UserController();
+        return $userController->register($register);
     }
 }

@@ -20,12 +20,21 @@ class RegistrationUploadDto  extends Dto\JsonDeserializer{
     public $phone;
     public $email;
     public $password;
-    
-    public function __construct($fname = null, $lname = null, $email = null,$password = null, $phone = null) {
+    public $token;
+    public $source;
+    public $url;
+
+
+    public function __construct($fname = null, $lname = null, $email = null,
+            $password = null, $phone = null, $token = null, $source = null, $url = null) {
         $this->fname = $fname;
         $this->lname = $lname;
         $this->password = $password;
         $this->email = $email;
         $this->phone = $phone;
+        $this->token = $token;
+        $this->source = $source;
+        $this->url = $url;
+       
     }
 }
