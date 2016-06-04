@@ -141,5 +141,10 @@ class UserController extends ApiController{
        
     }
     
+    public function isAdmin($credential) {
+        $this->autoRender = FALSE;
+        $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, 1);        
+        return $result;
+    }
   
 }

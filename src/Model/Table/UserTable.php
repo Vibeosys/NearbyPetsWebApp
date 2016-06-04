@@ -91,5 +91,13 @@ class UserTable extends Table{
         return FALSE;
     }
     
+    public function checkCredentialsWithRole($email, $pwd, $roleId) {
+        $conditions = ['UserEmail' => $email, 'Pwd' => $pwd, 'RoleId' => $roleId, 'Active' => 1];
+        $data = $this->connect()->find()->where($conditions);
+        if($data->count()){
+            return true;
+        }
+        return FALSE;
+    }
     
 }

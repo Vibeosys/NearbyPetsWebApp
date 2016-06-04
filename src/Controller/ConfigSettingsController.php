@@ -22,4 +22,12 @@ class ConfigSettingsController extends Apicontroller{
     public function getConfigSettings() {
         return $this->getTableObj()->getSettings();
     }
+    
+    public function saveConfigSettings($settingArray = NULL){
+        $result = true;
+        foreach ($settingArray as $setting)
+        {
+        }
+        return $result;
+    }
 }

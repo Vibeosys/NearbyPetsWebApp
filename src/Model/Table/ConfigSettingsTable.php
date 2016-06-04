@@ -36,4 +36,12 @@ class ConfigSettingsTable  extends Table{
             return FALSE;
         }
     }
+    
+    public function updateSettings($configKey, $configValue)
+    {
+        $configSetttingDb = $this->get($configKey);
+        $configSetttingDb -> $configValue = $configValue;
+        $this->save($configSetttingDb);
+        return $result;
+    }
 }
