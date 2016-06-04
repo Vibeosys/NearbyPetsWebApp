@@ -27,6 +27,7 @@ class ConfigSettingsController extends Apicontroller{
         $result = true;
         foreach ($settingArray as $setting)
         {
+             $result &= $this->getTableObj()->updateSettings($setting -> configKey, $setting -> configValue);   
         }
         return $result;
     }
