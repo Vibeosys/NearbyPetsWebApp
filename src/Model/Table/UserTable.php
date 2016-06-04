@@ -16,6 +16,7 @@ namespace App\Model\Table;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use App\Dto;
+use App\Dto\DownloadDto;
 
 class UserTable extends Table{
     
@@ -50,11 +51,13 @@ class UserTable extends Table{
     public function getCredential($email) {
         $conditions = ['UserEmail' => $email];
         $data = $this->connect()->find()->where($conditions);
-        $result = null;
+        if($data->count()){
         foreach ($data as $row){
           $result = $row->Pwd;  
         }
         return $result;
+        }
+        return FALSE;
     }
     
     public function insert($userId,$register) {
@@ -71,6 +74,18 @@ class UserTable extends Table{
         $newEntity->Active = 1;
         if($Obj->save($newEntity)){
             return true;
+        }
+        return FALSE;
+    }
+    
+    public function getUser($email) {
+        $conditions = ['UserEmail' => $email];
+        $data = $this->connect()->find()->where($conditions);
+        if($data->count()){
+            foreach ($data as $row){
+                $result = new DownloadDto\UserProfileDownloadDto($row->FirstName, $row->LastName, $row->UserEmail, $row->Phone); 
+            }
+        return $result;
         }
         return FALSE;
     }
