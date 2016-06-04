@@ -22,6 +22,10 @@ class Apicontroller extends AppController {
         'UL' => 'UserLogin',
         'UR' => 'UserRegistration',
         'CL' => 'CategoryList',
+        'FP' => 'ForgotPassword',
+        'GC' => 'GetCategory',
+        'GT' => 'GetTypes',
+        'GP' => 'GetProfile',
         'PD' => 'ProductDescription'
     ];
 

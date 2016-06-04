@@ -94,6 +94,28 @@ class UploadController extends Apicontroller{
                         $result = $userController->register($register);
                         $this->response->body($result);
                         break;
+                    case $this->apiOperation['FP']:
+                        $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
+                        $userController = new UserController();
+                         $response = $userController->passwordRecovery($credential->email);
+                         $this->response->body($response);
+                        break;
+                    case $this->apiOperation['GC']:
+                        $categoryController = new CategoryController();
+                        $response = $categoryController->getCategory();
+                        $this->response->body($response);
+                        break;
+                    case $this->apiOperation['GT']:
+                        $typesController = new AdTypesController();
+                        $response = $typesController->getAdTypes();
+                        $this->response->body($response);
+                        break;
+                     case $this->apiOperation['GP']:
+                       $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
+                         $userController = new UserController();
+                         $response = $userController->getUserProfile($credential->email);
+                         $this->response->body($response); 
+                         break;
             }
             }
         }
