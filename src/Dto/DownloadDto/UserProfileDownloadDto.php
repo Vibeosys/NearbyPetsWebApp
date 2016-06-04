@@ -15,16 +15,22 @@ namespace App\Dto\DownloadDto;
  */
 class UserProfileDownloadDto {
     
+    public $userid;
     public $fname;
     public $lname;
     public $email;
     public $phone;
-    
+    public $roleid;
+
+
     public function __construct($fname= null, $lname = null ,$email = null, 
-            $phone = null) {
+            $phone = null,$userid =null, $roleid = null) {
+        
         $this->fname = $fname;
         $this->lname = $lname;
         $this->email = $email;
         $this->phone = $phone;
+        $this->userid = $userid;
+        $this->roleid = $roleid;
     }
 }

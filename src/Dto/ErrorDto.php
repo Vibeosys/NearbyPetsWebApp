@@ -16,6 +16,7 @@ class ErrorDto {
     
     public $errorCode;
     public $message;
+    public $data;
 
 
     //format {"errorCode":"100", "message":"User is not authenticated"}
@@ -24,15 +25,17 @@ class ErrorDto {
         $errorDto = new ErrorDto();
         $errorDto->errorCode = $errorcode;
         $errorDto->message = $errorDto->errorDictionary[$errorcode];
+        $errorDto->data = null;
         $error[0] = $errorDto;
         return $error;//json_encode($error);
     }
     
-     public static function prepareSuccessMessage($successCode) {
+     public static function prepareSuccessMessage($successCode, $data) {
         
         $errorDto = new ErrorDto();
         $errorDto->errorCode = 0;
         $errorDto->message = $errorDto->SuccessDictionary[$successCode];
+        $errorDto->data = $data;
         $error[0] = $errorDto;
         return $error;//json_encode($error);
     }
@@ -42,15 +45,15 @@ class ErrorDto {
         101 => 'Login Failed',
         102 => 'Sorry..!Duplicate email.',
         103 => 'Sorry..!Registration Failed.',
-        104 => 'Invalid request',
-        105 => 'Error to Place order',
-        106 => 'Orders Not FulFilled for requested customer',
+        104 => 'Wrong Email',
+        105 => 'Error to find profile.',
+        106 => 'Error to change Ad status.',
        ];
     protected $SuccessDictionary = [
         1 => 'Login Success',
         2 => 'Congrasts..!You are register with us.',
-        3 => 'UserId not found in database or RestaurantId not valid',
-        4 => 'Update not found',
+        3 => 'Please check your mail box..!',
+        4 => 'Ad status chnaged.',
         5 => 'Invalid request',
         6 => 'Error to Place order',
         7 => 'Orders Not FulFilled for requested customer',

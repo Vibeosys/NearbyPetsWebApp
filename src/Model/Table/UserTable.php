@@ -83,7 +83,8 @@ class UserTable extends Table{
         $data = $this->connect()->find()->where($conditions);
         if($data->count()){
             foreach ($data as $row){
-                $result = new DownloadDto\UserProfileDownloadDto($row->FirstName, $row->LastName, $row->UserEmail, $row->Phone); 
+                $result = new DownloadDto\UserProfileDownloadDto($row->FirstName,
+                        $row->LastName, $row->UserEmail, $row->Phone, $row->UserId, $row->RoleId); 
             }
         return $result;
         }

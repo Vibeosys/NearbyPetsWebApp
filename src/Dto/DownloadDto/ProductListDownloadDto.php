@@ -15,18 +15,23 @@ namespace App\Dto\DownloadDto;
  */
 class ProductListDownloadDto {
    
+    public $adid;
     public $name;
     public $description;
     public $price;
     public $distance;
     public $image;
-    
+    public $date;
+
+
     public function __construct($name = null, $description = null, $price = null, 
-            $distance = null, $image = null) {
+            $distance = null, $image = null, $adid = null, $date = null) {
         $this->name = $name;
         $this->description = $description;
         $this->price = $price;
         $this->distance = $distance; 
         $this->image = $image;
+        $this->adid = $adid;
+        $this->date = $date;
     }
 }

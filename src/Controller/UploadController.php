@@ -22,6 +22,7 @@ class UploadController extends Apicontroller{
         if($this->request->is('post')){
             $request = $this->request->input();
             $requestEncode = UploadDto\RequestDto::Deserialize($request);
+            
             //$requestData = UploadDto\RequestDataDto::Deserialize($requestEncode->data);
             foreach ($requestEncode->data as $row){
             switch ($row->operation){
@@ -54,14 +55,8 @@ class UploadController extends Apicontroller{
                    
                 case $this->apiOperation['PD']:
                    $pet[0] = new DownloadDto\PetDownloadDto("dog", 200, 'black color'); 
-                  // $pet[1] = new DownloadDto\PetDownloadDto("dog", 200, 'black color'); 
-                   //$pet[2] = new DownloadDto\PetDownloadDto("dog", 200, 'black color'); 
                    $seller[0] = new DownloadDto\SellerDownloadDto("mark", 9922334455, "mark@gmail.com");
-                   //$seller[1] = new DownloadDto\SellerDownloadDto("mark", 9922334455, "mark@gmail.com");
-                   //$seller[2] = new DownloadDto\SellerDownloadDto("mark", 9922334455, "mark@gmail.com");
                    $details[0] = new DownloadDto\AdDetailsDownloadDto('23/05/2016', 4, 3);
-                   //$details[1] = new DownloadDto\AdDetailsDownloadDto('23/05/2016', 4, 3);
-                   //$details[2] = new DownloadDto\AdDetailsDownloadDto('23/05/2016', 4, 3);
                    $images[0] = new DownloadDto\SliderImagesDownloadDto('http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
                    $images[1] = new DownloadDto\SliderImagesDownloadDto('http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
                    $images[2] = new DownloadDto\SliderImagesDownloadDto('http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
@@ -73,10 +68,9 @@ class UploadController extends Apicontroller{
                    break;
                    case $this->apiOperation['UL']:
                        $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
-                       $userController = new UserController();
-                       $result = $userController->login($credential);
+                      $result = $this->userLogin($credential);
                        if($result){
-                           $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(1)));
+                           $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(1, $result)));
                        }  else {
                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(101)));
                        }
@@ -90,32 +84,26 @@ class UploadController extends Apicontroller{
                        break;
                     case $this->apiOperation['UR']:
                         $register = UploadDto\RegistrationUploadDto::Deserialize($row->operationData);
-                         $userController = new UserController();
-                        $result = $userController->register($register);
-                        $this->response->body($result);
+                        $this->response->body($this->userRegister($register));
                         break;
                     case $this->apiOperation['FP']:
                         $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
-                        $userController = new UserController();
-                         $response = $userController->passwordRecovery($credential->email);
-                         $this->response->body($response);
+                         $this->response->body($this->forgotPassword($credential));
                         break;
                     case $this->apiOperation['GC']:
-                        $categoryController = new CategoryController();
-                        $response = $categoryController->getCategory();
-                        $this->response->body($response);
+                        $this->response->body($this->getCategory());
                         break;
                     case $this->apiOperation['GT']:
-                        $typesController = new AdTypesController();
-                        $response = $typesController->getAdTypes();
-                        $this->response->body($response);
+                        $this->response->body($this->getAdType());
                         break;
                      case $this->apiOperation['GP']:
-                       $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
-                         $userController = new UserController();
-                         $response = $userController->getUserProfile($credential->email);
-                         $this->response->body($response); 
+                        $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
+                        $this->response->body($this->getProfile($credential)); 
                          break;
+                      case $this->apiOperation['CS']:
+                        $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
+                        $this->response->body($this->changeStatus($changeStatus)); 
+                          break;
             }
             }
         }
@@ -125,5 +113,40 @@ class UploadController extends Apicontroller{
     private function register($register) {
         $userController = new UserController();
         return $userController->register($register);
+    }
+    
+    public function userLogin($data) {
+         $userController = new UserController();
+         return $userController->login($data);
+    }
+    
+    private function userRegister($register) {
+        $userController = new UserController();
+        return $userController->register($register);
+    }
+    
+    private function forgotPassword($credential) {
+         $userController = new UserController();
+         return $userController->passwordRecovery($credential->email);
+    }
+    
+    private function getCategory() {
+         $categoryController = new CategoryController();
+         return $categoryController->getCategory();
+    }
+    
+    private function getAdType() {
+         $typesController = new AdTypesController();
+         return $typesController->getAdTypes();
+    }
+    
+    private function getProfile($credential) {
+        $userController = new UserController();
+        return $userController->getUserProfile($credential->email);
+    }
+    
+    private function changeStatus($changeStatus) {
+         $postedAdController = new PostedAdController();
+         return $postedAdController->changeAdStatus($changeStatus);
     }
 }

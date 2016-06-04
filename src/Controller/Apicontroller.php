@@ -26,7 +26,14 @@ class Apicontroller extends AppController {
         'GC' => 'GetCategory',
         'GT' => 'GetTypes',
         'GP' => 'GetProfile',
+        'CS' => 'ChangeStatus',
         'PD' => 'ProductDescription'
+    ];
+    
+    public $postedAdStatus = [
+        '1' => 'Sold Out',
+        '2' => 'Disabled',
+        '3' => 'Hidden'
     ];
 
     public function initialize() {

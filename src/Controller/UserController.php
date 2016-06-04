@@ -7,9 +7,9 @@
  */
 
 namespace App\Controller;
-use App\Model\Table;
+
 use App\Dto;
-use Cake\Mailer\Email;
+use App\Model\Table;
 
 /**
  * Description of UserController
@@ -41,7 +41,7 @@ class UserController extends ApiController{
            $pwd = $this->getTableObj()->getCredential($credential->email);
             if($credential->password == $pwd){
             
-                return true;
+                return $this->getTableObj()->getUser($credential->email);
             }
             return FALSE;
     }
@@ -54,7 +54,8 @@ class UserController extends ApiController{
         $userId = $this->guidGenerator();
         $result = $this->getTableObj()->insert($userId, $register);
         if($result){
-            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(2));
+            $user = $this->getTableObj()->getUser($register->email);
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(2, $user));
         }
         return $this->prepareResponse(Dto\ErrorDto::prepareError(103));
         
@@ -134,7 +135,7 @@ class UserController extends ApiController{
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         
           if(mail($userMail, $subject, $message,$headers)){
-              return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(3));
+              return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(3,null));
           }
           return $this->prepareResponse(Dto\ErrorDto::prepareError(104));
        
