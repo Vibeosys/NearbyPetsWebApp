@@ -31,7 +31,7 @@ class UploadController extends Apicontroller {
 
                     case $this->apiOperation['PL']:
                         $postedAdLocationRequest = UploadDto\PostedAdLocationRequest::Deserialize($row->operationData);
-                        $this->searchPostedAdListForLocation($postedAdLocationRequest);
+                        $data = $this->searchPostedAdListForLocation($postedAdLocationRequest);
                         $response = $this->prepareResponse($data);
                         $this->response->body($response);
                         break;
@@ -88,12 +88,12 @@ class UploadController extends Apicontroller {
                         $this->response->body($this->changeStatus($changeStatus));
                         break;
                     case $this->apiOperation['SS']:
-                        $isAdminUser = $this->isAdminUser($row->user);
+                        $isAdminUser = $this->isAdminUser($requestEncode->user);
                         if (!$isAdminUser) {
                             $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
                             return;
                         }
-                        $saveSettingsArray = Dto\JsonDeserializer::Deserialize($row->operationData);
+                        $saveSettingsArray = DownloadDto\ConfigSettingsDownloadDto::DeserializeArray($row->operationData);
                         $saveResult = $this->saveConfigSettins($saveSettingsArray);
                         if ($saveResult) {
                             $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(8)));

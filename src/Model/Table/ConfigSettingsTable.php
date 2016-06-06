@@ -39,9 +39,13 @@ class ConfigSettingsTable  extends Table{
     
     public function updateSettings($configKey, $configValue)
     {
-        $configSetttingDb = $this->get($configKey);
-        $configSetttingDb -> $configValue = $configValue;
-        $this->save($configSetttingDb);
-        return $result;
+        $tableObj = $this->connect();
+        $configSetttingDb = $tableObj->get($configKey);
+        $configSetttingDb->ConfigValue = $configValue;
+        $result = $tableObj->save($configSetttingDb);
+        if($result){
+            return TRUE;
+        }
+        return FALSE;
     }
 }

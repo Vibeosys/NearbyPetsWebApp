@@ -7,19 +7,19 @@
  */
 
 namespace App\Dto\DownloadDto;
-
+use App\Dto;
 /**
  * Description of ConfigSettingsDownloadDto
  *
  * @author niteen
  */
-class ConfigSettingsDownloadDto {
+class ConfigSettingsDownloadDto extends Dto\JsonDeserializer{
    
-    public $key;
-    public $value;
+    public $configKey;
+    public $configValue;
     public function __construct($key = null, $value = null) {
         
-        $this->key = $key;
-        $this->value = $value;
+        $this->configKey = $key;
+        $this->configValue = $value;
     }
 }

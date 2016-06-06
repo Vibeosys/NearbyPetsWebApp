@@ -20,11 +20,14 @@ class PostedAdLocationRequest extends Dto\JsonDeserializer {
     public $longitude;
     public $sortOption;  // Sort option is Date 0, Distance 1, Price 2
     public $sortChoice;  // Sort choise is ASC or DESC
-    
-    public function __construct($latitude = NULL, $longitude = NULL, $sortOption = 0, $sortChoice = 'DESC') {
+    public $pageNumber;  
+
+
+    public function __construct($latitude = NULL, $longitude = NULL, $sortOption = 0, $sortChoice = 'DESC', $pageNumber = 1) {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->sortChoice = $sortChoice;
         $this->sortOption = $sortOption;
+        $this->pageNumber = $pageNumber;
     }
 }

@@ -15,11 +15,11 @@ use App\Dto;
  */
 class ChangeStatusUploadDto extends Dto\JsonDeserializer{
     
-    public $adid;
+    public $adId;
     public $status;
     
     public function __construct($adid = null, $status = null) {
-        $this->adid = $adid;
+        $this->adId = $adid;
         $this->status = $status;
     }
 }

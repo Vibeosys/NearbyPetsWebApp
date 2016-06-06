@@ -25,7 +25,7 @@ class PostedAdController extends Apicontroller {
     public function changeAdStatus($request) {
         $statusController = new StatusController();
         $status = $statusController->getAdStatus($this->postedAdStatus[$request->status]);
-        $result = $this->getTableObj()->updateSatus($request->adid, $status);
+        $result = $this->getTableObj()->updateSatus($request->adId, $status);
         if ($result) {
             return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(4, null));
         }
