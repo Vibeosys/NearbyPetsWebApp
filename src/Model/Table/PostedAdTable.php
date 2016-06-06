@@ -167,6 +167,41 @@ class PostedAdTable extends Table {
         mysql_close($connection);
         return $adList;
     }
+    
+    public function CategoryWiseAdCallProcedureByDefaultPhp($postedAdLocationRequest) {
+        $name = "getCategoryWisePostedAdList";
+        $parameters = "'" . $postedAdLocationRequest->categoryId . "','" .$postedAdLocationRequest->latitude . "','" .
+                $postedAdLocationRequest->longitude . "','" . $postedAdLocationRequest->sortChoice . "','" .
+                $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . "";
+        $datasource = ConnectionManager::config('default');
+        $connection = mysql_connect($datasource['host'], $datasource['username'], $datasource['password']);
+        mysql_select_db($datasource['database'], $connection);
+        $query = "call " . $name . "(" . $parameters . ");";
+        $result = mysql_query($query);
+        //echo 'result from stored proce'.$result;
+        
+        $adList = array();
+        $counter = 0;
+        if (!is_bool($result)) {
+            $count = mysql_num_rows($result);
+            if ($count) {
+                while ($procRecord = mysql_fetch_assoc($result)) {
+                    $newAd = new DownloadDto\ProductListDownloadDto();
+                    $newAd->adid = $procRecord['AdId'];
+                    $newAd->date = $procRecord['PostedDate'];
+                    $newAd->description = $procRecord['Description'];
+                    $newAd->name = $procRecord['AdTitle'];
+                    $newAd->price = $procRecord['Price'];
+                    $newAd->image = $procRecord['DisplayImgUrl'];
+                    $newAd->distance = $procRecord['Distance'];
+                    $adList[$counter++] = $newAd;
+                }
+            }
+        }
+
+        mysql_close($connection);
+        return $adList;
+    }
 
     public function insert($adId, $postAd) {
 

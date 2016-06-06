@@ -17,7 +17,7 @@ class CategoryListDownloadDto {
     
     public  $title;
     public  $products;
-    public $image;
+    public  $image;
     
     public function __construct($title = null, $products = null, $image = null) {
         $this->title = $title;

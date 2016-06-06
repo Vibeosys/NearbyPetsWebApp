@@ -146,5 +146,10 @@ class UserController extends ApiController{
         $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, 1);        
         return $result;
     }
+    
+    public function isUser($credential, $role) {
+          $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, $role);        
+        return $result;
+    }
   
 }

@@ -95,6 +95,11 @@ class PostedAdController extends Apicontroller {
         $result = $this->getTableObj()->saveAdCallProcedureByDefaultPhp($postedAdLocationRequest);
         return $result;
     }
-
+    
+    public function getcategoryWiseAd($postedAdLocationRequest) {
+        $postedAdLocationRequest->sortOption = $this->sortOpetions[$postedAdLocationRequest->sortOption];
+        $result = $this->getTableObj()->CategoryWiseAdCallProcedureByDefaultPhp($postedAdLocationRequest);
+        return $result;
+    }
 
 }

@@ -30,14 +30,18 @@ class Apicontroller extends AppController {
         'PA' => 'PostAd',
         'SAA' => 'SaveAnAd',
         'GSA' => 'GetSavedAd',
+        'CPA' => 'ClassifiedAds',
+        'HP' => 'HidePost',
+        'DP' => 'DisablePost',
+        'SOP' => 'SoldOutPost',
         'CS' => 'ChangeStatus',
         'PD' => 'ProductDescription'
     ];
     
     public $postedAdStatus = [
-        '1' => 'Sold Out',
-        '2' => 'Disabled',
-        '3' => 'Hidden'
+        'SoldOut' => '1' ,
+        'Disabled' => '2',
+        'Hidden' => '3'
     ];
     
     public $sortOpetions = [

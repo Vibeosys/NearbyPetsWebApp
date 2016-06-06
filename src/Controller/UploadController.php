@@ -24,6 +24,12 @@ class UploadController extends Apicontroller {
         if ($this->request->is('post')) {
             $request = $this->request->input();
             $requestEncode = UploadDto\RequestDto::Deserialize($request);
+            $isUser = $this->isUser($requestEncode->user,2);
+            $isAdmin = $this->isUser($requestEncode->user,1);
+            if (!$isUser and !$isAdmin) {
+                $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                return;
+            }
 
             //$requestData = UploadDto\RequestDataDto::Deserialize($requestEncode->data);
             foreach ($requestEncode->data as $row) {
@@ -36,9 +42,16 @@ class UploadController extends Apicontroller {
                         $this->response->body($response);
                         break;
                     
-                     case $this->apiOperation['GSA']:
+                    case $this->apiOperation['GSA']:
                         $postedAdLocationRequest = UploadDto\SavedAdLocationRequest::Deserialize($row->operationData);
                         $data = $this->getUserSavedAd($postedAdLocationRequest);
+                        $response = $this->prepareResponse($data);
+                        $this->response->body($response);
+                        break;
+                    
+                    case $this->apiOperation['CPA']:
+                        $postedAdLocationRequest = UploadDto\CategoryWisePostedAdsdto::Deserialize($row->operationData);
+                        $data = $this->categoryWisePostedAds($postedAdLocationRequest);
                         $response = $this->prepareResponse($data);
                         $this->response->body($response);
                         break;
@@ -59,10 +72,7 @@ class UploadController extends Apicontroller {
                         }
                         break;
                     case $this->apiOperation['CL']:
-                        $category[0] = new DownloadDto\CategoryListDownloadDto("Parret", 20, 'animals.sandiegozoo.org/sites/default/files/styles/square_thumbnail/public/bowerbird_thumb.jpg');
-                        $category[1] = new DownloadDto\CategoryListDownloadDto("sparrow", 20, 'animals.sandiegozoo.org/sites/default/files/styles/square_thumbnail/public/bowerbird_thumb.jpg');
-                        $category[2] = new DownloadDto\CategoryListDownloadDto("Dog", 20, 'animals.sandiegozoo.org/sites/default/files/styles/square_thumbnail/public/bowerbird_thumb.jpg');
-                        $response = $this->prepareResponse($category);
+                        $response = $this->categoryList();
                         $this->response->body($response);
                         break;
                     case $this->apiOperation['UR']:
@@ -87,7 +97,32 @@ class UploadController extends Apicontroller {
                         $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
                         $this->response->body($this->getProfile($credential));
                         break;
-                    case $this->apiOperation['CS']:
+                    case $this->apiOperation['HP']:
+                         $isUser = $this->isUser($requestEncode->user,1);
+                        if (!$isUser) {
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                            return;
+                        }
+                        $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
+                        $this->response->body($this->changeStatus($changeStatus));
+                        break;
+                    
+                    case $this->apiOperation['DP']:
+                        $isUser = $this->isUser($requestEncode->user,2);
+                        if (!$isUser) {
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                            return;
+                        }
+                        $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
+                        $this->response->body($this->changeStatus($changeStatus));
+                        break;
+                    
+                    case $this->apiOperation['SOP']:
+                        $isUser = $this->isUser($requestEncode->user,2);
+                        if (!$isUser) {
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                            return;
+                        }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
                         $this->response->body($this->changeStatus($changeStatus));
                         break;
@@ -106,7 +141,7 @@ class UploadController extends Apicontroller {
                         }
                         //$this->response->body($response);
                         break;
-                          case $this->apiOperation['PA']:
+                        case $this->apiOperation['PA']:
                         $adDetails = UploadDto\PostedAdUploadDto::Deserialize($row->operationData);
                         $this->response->body($this->postAd($adDetails));
                         break;
@@ -120,6 +155,12 @@ class UploadController extends Apicontroller {
         $isAdminUser = $userController->isAdmin($credential);
         return $isAdminUser;
     }
+    private function isUser($credential,$roll) {
+        $userController = new UserController();
+        $isAdminUser = $userController->isUser($credential,$roll);
+        return $isAdminUser;
+    }
+    
 
     private function saveConfigSettins($saveSettingsArray) {
         $configSettingController = new ConfigSettingsController();
@@ -194,6 +235,15 @@ class UploadController extends Apicontroller {
          $postedAdController = new PostedAdController();
          return $postedAdController->getSavedAd($savedAdLocationRequest);
     }
-
+    
+    private function categoryList() {
+         $categoryController = new CategoryController();
+        return $categoryController->getAdCategoryList();
+    }
+    
+    public function categoryWisePostedAds($savedAdLocationRequest) {
+         $postedAdController = new PostedAdController();
+         return $postedAdController->getcategoryWiseAd($savedAdLocationRequest);
+    }
 
 }
