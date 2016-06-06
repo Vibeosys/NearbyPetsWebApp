@@ -90,8 +90,10 @@ class PostedAdController extends Apicontroller {
         return $result;
     }
     
-    public function getSavedAd() {
-        
+    public function getSavedAd($postedAdLocationRequest) {
+        $postedAdLocationRequest->sortOption = $this->sortOpetions[$postedAdLocationRequest->sortOption];
+        $result = $this->getTableObj()->saveAdCallProcedureByDefaultPhp($postedAdLocationRequest);
+        return $result;
     }
 
 

@@ -133,20 +133,22 @@ class PostedAdTable extends Table {
     }
     
     public function saveAdCallProcedureByDefaultPhp($postedAdLocationRequest) {
-        $name = "getPostedAdList";
+        $name = "getSavedAdList";
         $parameters = "'" . $postedAdLocationRequest->latitude . "','" .
                 $postedAdLocationRequest->longitude . "','" . $postedAdLocationRequest->sortChoice . "','" .
-                $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . "";
+                $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . "'," . 
+                $postedAdLocationRequest->userId . "";
         $datasource = ConnectionManager::config('default');
         $connection = mysql_connect($datasource['host'], $datasource['username'], $datasource['password']);
         mysql_select_db($datasource['database'], $connection);
         $query = "call " . $name . "(" . $parameters . ");";
         $result = mysql_query($query);
         //echo 'result from stored proce'.$result;
-        $count = mysql_num_rows($result);
+        
         $adList = array();
         $counter = 0;
         if (!is_bool($result)) {
+            $count = mysql_num_rows($result);
             if ($count) {
                 while ($procRecord = mysql_fetch_assoc($result)) {
                     $newAd = new DownloadDto\ProductListDownloadDto();

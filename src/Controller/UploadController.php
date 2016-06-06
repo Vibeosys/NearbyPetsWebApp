@@ -38,7 +38,7 @@ class UploadController extends Apicontroller {
                     
                      case $this->apiOperation['GSA']:
                         $postedAdLocationRequest = UploadDto\SavedAdLocationRequest::Deserialize($row->operationData);
-                        $data = $this->searchPostedAdListForLocation($postedAdLocationRequest);
+                        $data = $this->getUserSavedAd($postedAdLocationRequest);
                         $response = $this->prepareResponse($data);
                         $this->response->body($response);
                         break;
@@ -190,8 +190,9 @@ class UploadController extends Apicontroller {
         return $this->prepareResponse(Dto\ErrorDto::prepareError(110));
     }
     
-    public function getUserSavedAd() {
+    public function getUserSavedAd($savedAdLocationRequest) {
          $postedAdController = new PostedAdController();
+         return $postedAdController->getSavedAd($savedAdLocationRequest);
     }
 
 

@@ -13,11 +13,17 @@ use App\Dto;
  *
  * @author niteen
  */
-class SavedAdLocationRequest extends PostedAdLocationRequest{
+class SavedAdLocationRequest extends Dto\JsonDeserializer{
     
+    public $latitude;
+    public $longitude;
+    public $sortOption;  // Sort option is Date 0, Distance 1, Price 2
+    public $sortChoice;  // Sort choise is ASC or DESC
+    public $pageNumber;
     public $userId;
     
-     public function __construct($latitude = NULL, $longitude = NULL, $sortOption = 0, $sortChoice = 'DESC', $pageNumber = 1,$userId = null) {
+     public function __construct($latitude = NULL, $longitude = NULL, $sortOption = 0,
+             $sortChoice = 'DESC', $pageNumber = 1,$userId = null) {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->sortChoice = $sortChoice;
