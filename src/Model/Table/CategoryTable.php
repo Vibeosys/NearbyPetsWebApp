@@ -11,6 +11,7 @@ namespace App\Model\Table;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use App\Dto\DownloadDto;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Description of CategoryTable

@@ -23,7 +23,7 @@ class CategoryController extends Apicontroller{
         return $this->prepareResponse($result);
     }
     public function getAdCategoryList() {
-       $result = $this->getTableObj()->getCategoryList();
+       $result = $this->getTableObj()->getCategoryAdsList();
        return $this->prepareResponse($result);
     }
 }
