@@ -14,16 +14,21 @@ namespace App\Dto\DownloadDto;
  * @author niteen
  */
 class ProductDesciptionDownloadDto {
-   
-    public $pet;
-    public $seller;
-    public $details;
-    public $images;
-    public function __construct($pet = null, $seller = null, $details = null, $images = null) {
-        
-        $this->pet = $pet;
-        $this->seller = $seller;
-        $this->details= $details;
-        $this->images = $images;
-    }
+      //put your code here
+    public $adId;
+    public $adTitle;
+    public $description;    
+    public $adAddress;
+    public $displayAddress;
+    public $price;
+    public $name;
+    public $phone;
+    public $email;
+    public $postedDate;
+    public $adViews;
+    public $latitude;
+    public $longitude;
+    public $images;   
+    
+
 }

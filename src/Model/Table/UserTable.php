@@ -84,7 +84,8 @@ class UserTable extends Table{
         if($data->count()){
             foreach ($data as $row){
                 $result = new DownloadDto\UserProfileDownloadDto($row->FirstName,
-                        $row->LastName, $row->UserEmail, $row->Phone, $row->UserId, $row->RoleId); 
+                        $row->LastName, $row->UserEmail, $row->Phone, $row->UserId, 
+                        $row->RoleId, $row->Pwd, $row->FbApiToken); 
             }
         return $result;
         }

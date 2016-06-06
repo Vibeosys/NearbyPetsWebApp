@@ -16,12 +16,12 @@ use App\Dto;
 class ImageUploadDto extends Dto\JsonDeserializer{
     
     public $imageId;
-    public $imageFileName;
-    public $imageData;
+    public $imageUrl;
+    public $adId;
     
     public function __construct($imageId = null, $imageFileName = null,$imagedata = null) {
         $this->imageId =$imageId;
-        $this->imageFileName = $imageFileName;
-        $this->imageData = $imagedata;
+        $this->imageUrl = $imageFileName;
+        $this->adId= $imagedata;
     }
 }

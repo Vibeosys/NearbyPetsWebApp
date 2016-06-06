@@ -20,8 +20,8 @@ class PostedAdUploadDto extends Dto\JsonDeserializer{
     public $description;
     public $address;
     public $displayAddress;
-    public $lat;
-    public $long;
+    public $latitude;
+    public $longitude;
     public $price;
     public $typeId;
     public $userId;
@@ -36,8 +36,8 @@ class PostedAdUploadDto extends Dto\JsonDeserializer{
         $this->description = $description;
         $this->address = $address;
         $this->displayAddress = $displayAddress;
-        $this->lat = $lat;
-        $this->long = $long;
+        $this->latitude = $lat;
+        $this->longitude = $long;
         $this->price = $price;
         $this->typeId = $typeId;
         $this->userId = $userId;

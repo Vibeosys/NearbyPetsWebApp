@@ -35,17 +35,17 @@ class UploadController extends Apicontroller {
                         $response = $this->prepareResponse($data);
                         $this->response->body($response);
                         break;
-
+                    
+                     case $this->apiOperation['GSA']:
+                        $postedAdLocationRequest = UploadDto\SavedAdLocationRequest::Deserialize($row->operationData);
+                        $data = $this->searchPostedAdListForLocation($postedAdLocationRequest);
+                        $response = $this->prepareResponse($data);
+                        $this->response->body($response);
+                        break;
+                    
                     case $this->apiOperation['PD']:
-                        $pet[0] = new DownloadDto\PetDownloadDto("dog", 200, 'black color');
-                        $seller[0] = new DownloadDto\SellerDownloadDto("mark", 9922334455, "mark@gmail.com");
-                        $details[0] = new DownloadDto\AdDetailsDownloadDto('23/05/2016', 4, 3);
-                        $images[0] = new DownloadDto\SliderImagesDownloadDto('http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
-                        $images[1] = new DownloadDto\SliderImagesDownloadDto('http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
-                        $images[2] = new DownloadDto\SliderImagesDownloadDto('http://www.sciencemag.org/sites/default/files/styles/article_main_medium/public/images/60603W_Dogs.jpg');
-                        foreach ($pet as $key => $value) {
-                            $data[$key] = new DownloadDto\ProductDesciptionDownloadDto($value, $seller[$key], $details[$key], $images);
-                        }
+                        $request = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
+                        $data = $this->productDescription($request->adId);
                         $response = $this->prepareResponse($data);
                         $this->response->body($response);
                         break;
@@ -79,6 +79,10 @@ class UploadController extends Apicontroller {
                     case $this->apiOperation['GT']:
                         $this->response->body($this->getAdType());
                         break;
+                    case $this->apiOperation['SAA']:
+                        $saveAnRequest = UploadDto\SaveAnAdDto::Deserialize($row->operationData);
+                        $this->response->body($this->saveAnAd($saveAnRequest));
+                        break;
                     case $this->apiOperation['GP']:
                         $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
                         $this->response->body($this->getProfile($credential));
@@ -96,11 +100,15 @@ class UploadController extends Apicontroller {
                         $saveSettingsArray = DownloadDto\ConfigSettingsDownloadDto::DeserializeArray($row->operationData);
                         $saveResult = $this->saveConfigSettins($saveSettingsArray);
                         if ($saveResult) {
-                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(8)));
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(8, null)));
                         } else {
                             $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(107)));
                         }
                         //$this->response->body($response);
+                        break;
+                          case $this->apiOperation['PA']:
+                        $adDetails = UploadDto\PostedAdUploadDto::Deserialize($row->operationData);
+                        $this->response->body($this->postAd($adDetails));
                         break;
                 }
             }
@@ -163,5 +171,28 @@ class UploadController extends Apicontroller {
         $postedAdController = new PostedAdController();
         return $postedAdController->searchAdsForLocation($postedAdLocationRequest);
     }
+       private function postAd($adDetails) {
+        $postedAdController = new PostedAdController();
+        return $postedAdController->postAnAd($adDetails);
+    }
+    
+    private function productDescription($adId) {
+        $postAdcontroller = new PostedAdController();
+        $result = $postAdcontroller->getAdDetails($adId);
+        return $result;
+    }
+    private function saveAnAd($saveAnAdRequest) {
+        $favoriteAdsController = new FavoriteAdsController();
+        $result = $favoriteAdsController->saveAnAd($saveAnAdRequest);
+        if($result){
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(10, NULL));
+        }
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(110));
+    }
+    
+    public function getUserSavedAd() {
+         $postedAdController = new PostedAdController();
+    }
+
 
 }

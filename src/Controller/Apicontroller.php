@@ -26,6 +26,10 @@ class Apicontroller extends AppController {
         'GC' => 'GetCategory',
         'GT' => 'GetTypes',
         'GP' => 'GetProfile',
+        'SS' => 'SaveSettings',
+        'PA' => 'PostAd',
+        'SAA' => 'SaveAnAd',
+        'GSA' => 'GetSavedAd',
         'CS' => 'ChangeStatus',
         'PD' => 'ProductDescription'
     ];
@@ -34,6 +38,12 @@ class Apicontroller extends AppController {
         '1' => 'Sold Out',
         '2' => 'Disabled',
         '3' => 'Hidden'
+    ];
+    
+    public $sortOpetions = [
+        '0' => 'PostedDate',
+        '1' => 'Distance',
+        '2' => 'Price'
     ];
 
     public function initialize() {
@@ -63,6 +73,10 @@ class Apicontroller extends AppController {
                     //. chr(125); // "}"
             return $uuid;
         }
+    }
+    
+    public function getExtension($fileName) {
+        return end((explode('.', $fileName)));
     }
 
 }

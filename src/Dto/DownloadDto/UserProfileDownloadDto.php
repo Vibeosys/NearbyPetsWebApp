@@ -21,10 +21,12 @@ class UserProfileDownloadDto {
     public $email;
     public $phone;
     public $roleid;
+    public $pwd;
+    public $token;
 
 
     public function __construct($fname= null, $lname = null ,$email = null, 
-            $phone = null,$userid =null, $roleid = null) {
+            $phone = null,$userid =null, $roleid = null, $pwd = null, $token = null) {
         
         $this->fname = $fname;
         $this->lname = $lname;
@@ -32,5 +34,7 @@ class UserProfileDownloadDto {
         $this->phone = $phone;
         $this->userid = $userid;
         $this->roleid = $roleid;
+        $this->token = $token;
+        $this->pwd = $pwd;
     }
 }

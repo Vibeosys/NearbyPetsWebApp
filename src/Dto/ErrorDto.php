@@ -49,7 +49,9 @@ class ErrorDto {
         105 => 'Error to find profile.',
         106 => 'Error to change Ad status.',
         107 => 'Configurations could not be saved',
-        108 => 'User is not authorised for this transaction'
+        108 => 'User is not authorised for this transaction',
+        109 => 'Error in Ad posting.',
+        110 => 'Error in save Ad.'
        ];
     protected $SuccessDictionary = [
         1 => 'Login Success',
@@ -59,7 +61,9 @@ class ErrorDto {
         5 => 'Invalid request',
         6 => 'Error to Place order',
         7 => 'Orders Not FulFilled for requested customer',
-        8 => 'Configurations saved successfully'
+        8 => 'Configurations saved successfully',
+        9 => 'Your ad posted successfully.',
+        10 => 'Your ad set as Favourite successfully.'
        ];
     
 }
