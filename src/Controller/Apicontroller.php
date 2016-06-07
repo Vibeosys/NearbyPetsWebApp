@@ -31,6 +31,7 @@ class Apicontroller extends AppController {
         'SAA' => 'SaveAnAd',
         'GSA' => 'GetSavedAd',
         'CPA' => 'ClassifiedAds',
+        'MPA' => 'MyPostedAds',
         'HP' => 'HidePost',
         'DP' => 'DisablePost',
         'SOP' => 'SoldOutPost',

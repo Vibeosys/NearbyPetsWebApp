@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 use App\Model\Table;
+use App\Dto;
 /**
  * Description of AdTypesController
  *
@@ -19,7 +20,10 @@ class AdTypesController extends Apicontroller{
         return new Table\AdTypesTable();
     }
     public function getAdTypes() {
-        $result = $this->getTableObj()->getAll();
-        return $this->prepareResponse($result);
+       $result = $this->getTableObj()->getAll();
+       if(empty($result))
+       return $this->prepareResponse(Dto\ErrorDto::prepareError(112));
+       else
+       return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(13, $result)); 
     }
 }

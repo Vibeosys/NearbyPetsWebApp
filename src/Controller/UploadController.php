@@ -24,11 +24,13 @@ class UploadController extends Apicontroller {
         if ($this->request->is('post')) {
             $request = $this->request->input();
             $requestEncode = UploadDto\RequestDto::Deserialize($request);
+            if(isset($requestEncode->user->email)){
             $isUser = $this->isUser($requestEncode->user,2);
             $isAdmin = $this->isUser($requestEncode->user,1);
             if (!$isUser and !$isAdmin) {
                 $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
                 return;
+            }
             }
 
             //$requestData = UploadDto\RequestDataDto::Deserialize($requestEncode->data);
@@ -38,29 +40,58 @@ class UploadController extends Apicontroller {
                     case $this->apiOperation['PL']:
                         $postedAdLocationRequest = UploadDto\PostedAdLocationRequest::Deserialize($row->operationData);
                         $data = $this->searchPostedAdListForLocation($postedAdLocationRequest);
-                        $response = $this->prepareResponse($data);
+                        if(empty($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                        }else{
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                        }
                         $this->response->body($response);
                         break;
                     
                     case $this->apiOperation['GSA']:
                         $postedAdLocationRequest = UploadDto\SavedAdLocationRequest::Deserialize($row->operationData);
                         $data = $this->getUserSavedAd($postedAdLocationRequest);
-                        $response = $this->prepareResponse($data);
+                        if(empty($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                        }else{
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                        }
                         $this->response->body($response);
                         break;
                     
                     case $this->apiOperation['CPA']:
                         $postedAdLocationRequest = UploadDto\CategoryWisePostedAdsdto::Deserialize($row->operationData);
                         $data = $this->categoryWisePostedAds($postedAdLocationRequest);
-                        $response = $this->prepareResponse($data);
+                       if(empty($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                        }else{
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                        }
+                        $this->response->body($response);
+                        break;
+                    
+                    case $this->apiOperation['MPA']:
+                        $postedAdLocationRequest = UploadDto\UserPosedAdDto::Deserialize($row->operationData);
+                        $data = $this->myUserPostedAds($postedAdLocationRequest);
+                        if(empty($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                        }else{
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                        }
                         $this->response->body($response);
                         break;
                     
                     case $this->apiOperation['PD']:
                         $request = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
                         $data = $this->productDescription($request->adId);
-                        $response = $this->prepareResponse($data);
+                        if(is_null($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                        }else{
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                              $this->adViews($requestEncode->user,$request->adId);
+                        }
                         $this->response->body($response);
+                       
                         break;
                     case $this->apiOperation['UL']:
                         $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
@@ -141,7 +172,7 @@ class UploadController extends Apicontroller {
                         }
                         //$this->response->body($response);
                         break;
-                        case $this->apiOperation['PA']:
+                    case $this->apiOperation['PA']:
                         $adDetails = UploadDto\PostedAdUploadDto::Deserialize($row->operationData);
                         $this->response->body($this->postAd($adDetails));
                         break;
@@ -212,7 +243,8 @@ class UploadController extends Apicontroller {
         $postedAdController = new PostedAdController();
         return $postedAdController->searchAdsForLocation($postedAdLocationRequest);
     }
-       private function postAd($adDetails) {
+    
+    private function postAd($adDetails) {
         $postedAdController = new PostedAdController();
         return $postedAdController->postAnAd($adDetails);
     }
@@ -244,6 +276,16 @@ class UploadController extends Apicontroller {
     public function categoryWisePostedAds($savedAdLocationRequest) {
          $postedAdController = new PostedAdController();
          return $postedAdController->getcategoryWiseAd($savedAdLocationRequest);
+    }
+    
+    public function myUserPostedAds($savedAdLocationRequest) {
+         $postedAdController = new PostedAdController();
+         return $postedAdController->getUserWisePostedAd($savedAdLocationRequest);
+    }
+    
+    public function adViews($user, $adId) {
+         $postedAdController = new PostedAdController();
+         return $postedAdController->addViewToAd($user->userId, $adId);
     }
 
 }

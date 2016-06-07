@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 use App\Model\Table;
+use App\Dto;
 /**
  * Description of CategoryController
  *
@@ -20,10 +21,16 @@ class CategoryController extends Apicontroller{
     }
     public function getCategory() {
         $result = $this->getTableObj()->getAll();
-        return $this->prepareResponse($result);
+        if(empty($result))
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(112));
+        else
+        return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(12, $result));
     }
     public function getAdCategoryList() {
        $result = $this->getTableObj()->getCategoryAdsList();
-       return $this->prepareResponse($result);
+       if(empty($result))
+       return $this->prepareResponse(Dto\ErrorDto::prepareError(112));
+       else
+       return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(12, $result));    
     }
 }

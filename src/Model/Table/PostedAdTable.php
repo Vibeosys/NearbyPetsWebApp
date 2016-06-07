@@ -13,6 +13,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use App\Dto;
 use App\Dto\DownloadDto;
+use Cake\Database\Type\DateTimeType;
 
 /**
  * Description of PostedAdTable
@@ -117,7 +118,8 @@ class PostedAdTable extends Table {
                 while ($procRecord = mysql_fetch_assoc($result)) {
                     $newAd = new DownloadDto\ProductListDownloadDto();
                     $newAd->adid = $procRecord['AdId'];
-                    $newAd->date = $procRecord['PostedDate'];
+                    $date = new \Cake\I18n\Date($procRecord['PostedDate']);
+                    $newAd->date = $date;
                     $newAd->description = $procRecord['Description'];
                     $newAd->name = $procRecord['AdTitle'];
                     $newAd->price = $procRecord['Price'];
@@ -153,7 +155,8 @@ class PostedAdTable extends Table {
                 while ($procRecord = mysql_fetch_assoc($result)) {
                     $newAd = new DownloadDto\ProductListDownloadDto();
                     $newAd->adid = $procRecord['AdId'];
-                    $newAd->date = $procRecord['PostedDate'];
+                    $date = new \Cake\I18n\Date($procRecord['PostedDate']);
+                    $newAd->date = $date;
                     $newAd->description = $procRecord['Description'];
                     $newAd->name = $procRecord['AdTitle'];
                     $newAd->price = $procRecord['Price'];
@@ -188,7 +191,44 @@ class PostedAdTable extends Table {
                 while ($procRecord = mysql_fetch_assoc($result)) {
                     $newAd = new DownloadDto\ProductListDownloadDto();
                     $newAd->adid = $procRecord['AdId'];
-                    $newAd->date = $procRecord['PostedDate'];
+                     $date = new \Cake\I18n\Date($procRecord['PostedDate']);
+                    $newAd->date = $date;
+                    $newAd->description = $procRecord['Description'];
+                    $newAd->name = $procRecord['AdTitle'];
+                    $newAd->price = $procRecord['Price'];
+                    $newAd->image = $procRecord['DisplayImgUrl'];
+                    $newAd->distance = $procRecord['Distance'];
+                    $adList[$counter++] = $newAd;
+                }
+            }
+        }
+
+        mysql_close($connection);
+        return $adList;
+    }
+    
+     public function userWiseAdCallProcedureByDefaultPhp($postedAdLocationRequest) {
+        $name = "getUserPostedAdList";
+        $parameters = "'" . $postedAdLocationRequest->userId . "','" .$postedAdLocationRequest->latitude . "','" .
+                $postedAdLocationRequest->longitude . "','" . $postedAdLocationRequest->sortChoice . "','" .
+                $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . "";
+        $datasource = ConnectionManager::config('default');
+        $connection = mysql_connect($datasource['host'], $datasource['username'], $datasource['password']);
+        mysql_select_db($datasource['database'], $connection);
+        $query = "call " . $name . "(" . $parameters . ");";
+        $result = mysql_query($query);
+        //echo 'result from stored proce'.$result;
+        
+        $adList = array();
+        $counter = 0;
+        if (!is_bool($result)) {
+            $count = mysql_num_rows($result);
+            if ($count) {
+                while ($procRecord = mysql_fetch_assoc($result)) {
+                    $newAd = new DownloadDto\ProductListDownloadDto();
+                    $newAd->adid = $procRecord['AdId'];
+                     $date = new \Cake\I18n\Date($procRecord['PostedDate']);
+                    $newAd->date = $date;
                     $newAd->description = $procRecord['Description'];
                     $newAd->name = $procRecord['AdTitle'];
                     $newAd->price = $procRecord['Price'];
@@ -255,6 +295,7 @@ class PostedAdTable extends Table {
         );
 
         $adResult = null;
+        if($adDetails->count()){
         foreach ($adDetails as $adRecord) {
             $adResult = new DownloadDto\ProductDesciptionDownloadDto();
             $adResult->adId = $adRecord->AdId;
@@ -270,7 +311,7 @@ class PostedAdTable extends Table {
             $adResult->name = $adRecord->user->FirstName . " " . $adRecord->user->LastName;
             $adResult->phone = $adRecord->user->Phone;
             $adResult->email = $adRecord->user->UserEmail;
-        }
+        }}
         return $adResult;
         //$this->connect()->get($adId)->;
     }
@@ -282,6 +323,21 @@ class PostedAdTable extends Table {
         $update->set($key);
         $update->where($conditions);
         if($update->execute()){
+            return TRUE;
+        }
+        return FALSE;
+    }
+    
+    public function updateView($userId, $adId) {
+        $tObj = $this->connect();
+        $condition = ['AdId =' => $adId, 'UserId =' => $userId];
+        $rows = $tObj->find()->where($condition);
+        if($rows->count()){
+            return NULL;
+        }
+        $updateObj = $tObj->get($adId);
+        $updateObj->AdViews = $updateObj->AdViews + 1;
+        if($tObj->save($updateObj)){
             return TRUE;
         }
         return FALSE;

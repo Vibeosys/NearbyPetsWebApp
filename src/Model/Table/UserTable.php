@@ -25,7 +25,7 @@ class UserTable extends Table{
         return TableRegistry::get('user');
     }
 
-    public function is_present($email = null,$fb_token =null) {
+    public function is_present($email = null,$fb_token = null) {
         
         if(is_null($email)){
             $conditions = [
@@ -69,6 +69,8 @@ class UserTable extends Table{
         $newEntity->FirstName = $register->fname;
         $newEntity->LastName = $register->lname;
         $newEntity->Phone = $register->phone;
+        $newEntity->LoginSource = $register->source;
+        $newEntity->FbApiToken = $register->token;
         $newEntity->CreatedDate = date(DATE_TIME_FORMAT);
         $newEntity->RoleId = 1;
         $newEntity->Active = 1;
@@ -78,6 +80,22 @@ class UserTable extends Table{
         return FALSE;
     }
     
+    public function updateFbUserToken($email, $token) {
+        $key = [
+            'FbApiToken' => $token
+        ];
+        $conditions = [
+            'UserEmail =' => $email 
+        ];
+        $update = $this->connect()->query()->update();
+        $update->set($key);
+        $update->where($conditions);
+        if($update->execute()){
+            return true;
+        }
+        return FALSE;
+        
+    }
     public function getUser($email) {
         $conditions = ['UserEmail' => $email];
         $data = $this->connect()->find()->where($conditions);
@@ -94,6 +112,15 @@ class UserTable extends Table{
     
     public function checkCredentialsWithRole($email, $pwd, $roleId) {
         $conditions = ['UserEmail' => $email, 'Pwd' => $pwd, 'RoleId' => $roleId, 'Active' => 1];
+        $data = $this->connect()->find()->where($conditions);
+        if($data->count()){
+            return true;
+        }
+        return FALSE;
+    }
+    
+    public function checkValidFbUser($token, $role) {
+        $conditions = ['FbApiToken' => $token, 'RoleId' => $role, 'Active' => 1];
         $data = $this->connect()->find()->where($conditions);
         if($data->count()){
             return true;

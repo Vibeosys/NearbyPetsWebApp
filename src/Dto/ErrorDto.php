@@ -45,13 +45,15 @@ class ErrorDto {
         101 => 'Login Failed',
         102 => 'Sorry..!Duplicate email.',
         103 => 'Sorry..!Registration Failed.',
-        104 => 'Wrong Email',
+        104 => 'Email id invalid, it does not exist in our record',
         105 => 'Error to find profile.',
         106 => 'Error to change Ad status.',
-        107 => 'Configurations could not be saved',
+        107 => 'Configurations could not be saved.',
         108 => 'User is not authorised for this transaction',
         109 => 'Error in Ad posting.',
-        110 => 'Error in save Ad.'
+        110 => 'Error in save Ad.',
+        111 => 'Ads not found.',
+        112 => 'data not found.'
        ];
     protected $SuccessDictionary = [
         1 => 'Login Success',
@@ -63,7 +65,11 @@ class ErrorDto {
         7 => 'Orders Not FulFilled for requested customer',
         8 => 'Configurations saved successfully',
         9 => 'Your ad posted successfully.',
-        10 => 'Your ad set as Favourite successfully.'
+        10 => 'Your ad set as Favourite successfully.',
+        11 => 'Ad found.',
+        12 => 'categories are found.',
+        13 => 'Types are found.',
+        14 => 'Requested profile found.'
        ];
     
 }

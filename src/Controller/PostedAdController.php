@@ -84,9 +84,11 @@ class PostedAdController extends Apicontroller {
     
     public function getAdDetails($adId){
         $result = $this->getTableObj()->getAdDetails($adId);
+        if(!is_null($result)){
         $postedAdImagesController = new PostedAdImagesController(); 
         $images = $postedAdImagesController->getAdImages($adId);
         $result->images = $images;
+        }
         return $result;
     }
     
@@ -100,6 +102,16 @@ class PostedAdController extends Apicontroller {
         $postedAdLocationRequest->sortOption = $this->sortOpetions[$postedAdLocationRequest->sortOption];
         $result = $this->getTableObj()->CategoryWiseAdCallProcedureByDefaultPhp($postedAdLocationRequest);
         return $result;
+    }
+    
+    public function getUserWisePostedAd($postedAdLocationRequest) {
+        $postedAdLocationRequest->sortOption = $this->sortOpetions[$postedAdLocationRequest->sortOption];
+        $result = $this->getTableObj()->userWiseAdCallProcedureByDefaultPhp($postedAdLocationRequest);
+        return $result;
+    }
+    
+    public function addViewToAd($userId, $adId) {
+        return $this->getTableObj()->updateView($userId, $adId);
     }
 
 }

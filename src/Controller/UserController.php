@@ -32,7 +32,7 @@ class UserController extends ApiController{
     public function getUserProfile($email) {
         $result = $this->getTableObj()->getUser($email);
         if($result){
-            return $this->prepareResponse($result);
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(14, $result));
         }
         return $this->prepareResponse(Dto\ErrorDto::prepareError(105));
     }
@@ -48,11 +48,17 @@ class UserController extends ApiController{
     
     public function register($register) {
         $this->autoRender = FALSE;
-        if($this->getTableObj()->is_present($register->email)){
+        $is_present = $this->getTableObj()->is_present($register->email);
+        if( $is_present and $register->source == 1){
             return $this->prepareResponse(Dto\ErrorDto::prepareError(102));
         }
-        $userId = $this->guidGenerator();
-        $result = $this->getTableObj()->insert($userId, $register);
+        if($is_present){
+            $result = $this->getTableObj()->updateFbUserToken(
+                    $register->email, $register->token);
+        }  else {
+            $userId = $this->guidGenerator();
+            $result = $this->getTableObj()->insert($userId, $register);
+        }
         if($result){
             $user = $this->getTableObj()->getUser($register->email);
             return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(2, $user));
@@ -148,6 +154,9 @@ class UserController extends ApiController{
     }
     
     public function isUser($credential, $role) {
+        if(isset($credential->accessToken)){
+            return $this->getTableObj()->checkValidFbUser($credential->accessToken, $role);
+        }
           $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, $role);        
         return $result;
     }
