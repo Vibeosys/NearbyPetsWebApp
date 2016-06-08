@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Model\Table;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,57 +13,53 @@ namespace App\Model\Table;
  *
  * @author niteen
  */
-
-
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use App\Dto;
 use App\Dto\DownloadDto;
 use PDOException;
 
-class UserTable extends Table{
-    
-    
+class UserTable extends Table {
+
     public function connect() {
         return TableRegistry::get('user');
     }
 
-    public function is_present($email = null,$fb_token = null) {
-        
-        if(is_null($email)){
+    public function is_present($email = null, $fb_token = null) {
+
+        if (is_null($email)) {
             $conditions = [
                 'FbApiToken' => $fb_token
-            ]; 
-        }  else {
+            ];
+        } else {
             $conditions = [
                 'UserEmail' => $email
             ];
         }
-        try{
-         $data = $this->connect()->find()->where($conditions);
-            if($data->count()){
+        try {
+            $data = $this->connect()->find()->where($conditions);
+            if ($data->count()) {
                 return true;
             }
             return FALSE;
-        
-        }  catch (Exception $e){
+        } catch (Exception $e) {
             trigger_error('Database error');
         }
     }
-    
+
     public function getCredential($email) {
         $conditions = ['UserEmail' => $email, 'LoginSource' => 1];
         $data = $this->connect()->find()->where($conditions);
-        if($data->count()){
-        foreach ($data as $row){
-          $result = $row->Pwd;  
-        }
-        return $result;
+        if ($data->count()) {
+            foreach ($data as $row) {
+                $result = $row->Pwd;
+            }
+            return $result;
         }
         return FALSE;
     }
-    
-    public function insert($userId,$register) {
+
+    public function insert($userId, $register) {
         $Obj = $this->connect();
         $newEntity = $Obj->newEntity();
         $newEntity->UserId = $userId;
@@ -75,62 +73,60 @@ class UserTable extends Table{
         $newEntity->CreatedDate = date(DATE_TIME_FORMAT);
         $newEntity->RoleId = 1;
         $newEntity->Active = 1;
-        if($Obj->save($newEntity)){
+        if ($Obj->save($newEntity)) {
             return true;
         }
         return FALSE;
     }
-    
+
     public function updateFbUserToken($email, $token) {
         $key = [
             'FbApiToken' => $token
         ];
         $conditions = [
-            'UserEmail =' => $email 
+            'UserEmail =' => $email
         ];
         $update = $this->connect()->query()->update();
         $update->set($key);
         $update->where($conditions);
-        if($update->execute()){
+        if ($update->execute()) {
             return true;
         }
         return FALSE;
-        
     }
+
     public function getUser($email) {
         $conditions = ['UserEmail' => $email];
-        try{
+        try {
             $data = $this->connect()->find()->where($conditions);
-        }catch (PDOException $ex){
+        } catch (PDOException $ex) {
             return FALSE;
         }
-        if($data->count()){
-            foreach ($data as $row){
-                $result = new DownloadDto\UserProfileDownloadDto($row->FirstName,
-                        $row->LastName, $row->UserEmail, $row->Phone, $row->UserId, 
-                        $row->RoleId, $row->Pwd, $row->FbApiToken); 
+        if ($data->count()) {
+            foreach ($data as $row) {
+                $result = new DownloadDto\UserProfileDownloadDto($row->FirstName, $row->LastName, $row->UserEmail, $row->Phone, $row->UserId, $row->RoleId, $row->Pwd, $row->FbApiToken);
             }
-        return $result;
+            return $result;
         }
         return FALSE;
     }
-    
+
     public function checkCredentialsWithRole($email, $pwd, $roleId) {
         $conditions = ['UserEmail' => $email, 'Pwd' => $pwd, 'RoleId' => $roleId, 'Active' => 1];
         $data = $this->connect()->find()->where($conditions);
-        if($data->count()){
+        if ($data->count()) {
             return true;
         }
         return FALSE;
     }
-    
+
     public function checkValidFbUser($token, $role) {
         $conditions = ['FbApiToken' => $token, 'RoleId' => $role, 'Active' => 1];
         $data = $this->connect()->find()->where($conditions);
-        if($data->count()){
+        if ($data->count()) {
             return true;
         }
         return FALSE;
     }
-    
+
 }

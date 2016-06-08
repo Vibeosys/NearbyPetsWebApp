@@ -16,71 +16,71 @@ use App\Model\Table;
  *
  * @author niteen
  */
-class UserController extends ApiController{
-    
+class UserController extends ApiController {
+
     public function getTableObj() {
         return new Table\UserTable();
     }
-    
+
     public function test() {
         $this->autoRender = FALSE;
         $data['code'] = 1;
         $data['msg'] = 'Route Access';
         $this->response->body(json_encode($data));
     }
-    
+
     public function getUserProfile($email) {
         $result = $this->getTableObj()->getUser($email);
-        if($result){
+        if ($result) {
             return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(14), $result);
         }
         return $this->prepareResponse(Dto\ErrorDto::prepareError(105), null);
     }
+
     public function login($credential) {
         $this->autoRender = FALSE;
-           $pwd = $this->getTableObj()->getCredential($credential->email);
-            if($credential->password == $pwd){
-            
-                return $this->getTableObj()->getUser($credential->email);
-            }
-            return FALSE;
+        $pwd = $this->getTableObj()->getCredential($credential->email);
+        if ($credential->password == $pwd) {
+
+            return $this->getTableObj()->getUser($credential->email);
+        }
+        return FALSE;
     }
-    
+
     public function register($register) {
         $this->autoRender = FALSE;
         $is_present = $this->getTableObj()->is_present($register->email);
-        if( $is_present and $register->source == 1){
+        if ($is_present and $register->source == 1) {
             return $this->prepareResponse(Dto\ErrorDto::prepareError(102), null);
         }
-        if($is_present){
+        if ($is_present) {
             $result = $this->getTableObj()->updateFbUserToken(
                     $register->email, $register->token);
-        }  else {
+        } else {
             $userId = $this->guidGenerator();
             $result = $this->getTableObj()->insert($userId, $register);
         }
-        if($result){
+        if ($result) {
             $user = $this->getTableObj()->getUser($register->email);
             return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(2), $user);
         }
         return $this->prepareResponse(Dto\ErrorDto::prepareError(103), null);
-        
     }
-    
+
     public function passwordRecovery($userMail) {
         $this->autoRender = FALSE;
-         /*   
+        /*
           $email = new Email();
           $email->to($userMail);
           $email->from('veerniteen@gmail.com');
           $email->subject('Password recovery');
-           $email->template('forgot_password');
-           $email->emailFormat('html');
-          $email->set('password','123456');*/
+          $email->template('forgot_password');
+          $email->emailFormat('html');
+          $email->set('password','123456'); */
         $subject = "Password recovery";
-        $password =$this->getTableObj()->getCredential($userMail);
-        if(!$password){
-             return $this->prepareResponse(Dto\ErrorDto::prepareError(104), null);
+        $password = $this->getTableObj()->getCredential($userMail);
+        if (!$password) {
+            return $this->prepareResponse(Dto\ErrorDto::prepareError(104), null);
         }
         $message = '<html><head>
                     <title>Forgot Password</title>
@@ -113,7 +113,7 @@ class UserController extends ApiController{
                     </tr>
                     <tr>
                     <td class="content-block">
-                    <p style="align:center">'.$password .'</p>
+                    <p style="align:center">' . $password . '</p>
                     </td>
                     </tr>
                     <tr>
@@ -139,26 +139,25 @@ class UserController extends ApiController{
                     </body></html>';
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        
-          if(mail($userMail, $subject, $message,$headers)){
-              return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(3), null);
-          }
-          return $this->prepareResponse(Dto\ErrorDto::prepareError(104), null);
-       
+
+        if (mail($userMail, $subject, $message, $headers)) {
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(3), null);
+        }
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(113), null);
     }
-    
+
     public function isAdmin($credential) {
         $this->autoRender = FALSE;
-        $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, 1);        
+        $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, 1);
         return $result;
     }
-    
+
     public function isUser($credential, $role) {
-        if(isset($credential->accessToken)){
+        if (isset($credential->accessToken)) {
             return $this->getTableObj()->checkValidFbUser($credential->accessToken, $role);
         }
-          $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, $role);        
+        $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, $role);
         return $result;
     }
-  
+
 }
