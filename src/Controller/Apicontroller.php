@@ -56,10 +56,16 @@ class Apicontroller extends AppController {
         $this->response->type('json');
     }
 
-    public function prepareResponse($data) {
+    public function prepareResponse($error, $data) {
+        // error code 500 for database exception 
         $configController = new ConfigSettingsController();
         $settings = $configController->getConfigSettings();
-        $result = new DownloadDto\ResponseDto($settings, $data);
+        if(!is_null($data))
+            $data = json_encode($data);
+        if($error->errorCode == 500)
+        $result = new DownloadDto\ResponseDto(null, $data, $error);
+        else
+        $result = new DownloadDto\ResponseDto($settings, $data, $error);    
         return json_encode($result);
     }
 

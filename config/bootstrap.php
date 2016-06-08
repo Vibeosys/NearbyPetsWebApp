@@ -54,6 +54,8 @@ use Cake\Network\Request;
 use Cake\Routing\DispatcherFactory;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
+use App\Error\AppError;
+
 
 /**
  * Read configuration file and inject configuration into various
@@ -201,3 +203,7 @@ DispatcherFactory::add('ControllerFactory');
  * This is needed for matching the auto-localized string output of Time() class when parsing dates.
  */
 Type::build('datetime')->useLocaleParser();
+
+//error handler
+$errorHandler = new AppError();
+$errorHandler->register();

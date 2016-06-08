@@ -22,15 +22,15 @@ class CategoryController extends Apicontroller{
     public function getCategory() {
         $result = $this->getTableObj()->getAll();
         if(empty($result))
-        return $this->prepareResponse(Dto\ErrorDto::prepareError(112));
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(112), null);
         else
-        return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(12, $result));
+        return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(12), $result);
     }
     public function getAdCategoryList() {
        $result = $this->getTableObj()->getCategoryAdsList();
        if(empty($result))
-       return $this->prepareResponse(Dto\ErrorDto::prepareError(112));
+       return $this->prepareResponse(Dto\ErrorDto::prepareError(112), null);
        else
-       return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(12, $result));    
+       return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(12), $result);    
     }
 }

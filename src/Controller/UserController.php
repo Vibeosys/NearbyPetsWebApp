@@ -32,9 +32,9 @@ class UserController extends ApiController{
     public function getUserProfile($email) {
         $result = $this->getTableObj()->getUser($email);
         if($result){
-            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(14, $result));
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(14), $result);
         }
-        return $this->prepareResponse(Dto\ErrorDto::prepareError(105));
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(105), null);
     }
     public function login($credential) {
         $this->autoRender = FALSE;
@@ -50,7 +50,7 @@ class UserController extends ApiController{
         $this->autoRender = FALSE;
         $is_present = $this->getTableObj()->is_present($register->email);
         if( $is_present and $register->source == 1){
-            return $this->prepareResponse(Dto\ErrorDto::prepareError(102));
+            return $this->prepareResponse(Dto\ErrorDto::prepareError(102), null);
         }
         if($is_present){
             $result = $this->getTableObj()->updateFbUserToken(
@@ -61,9 +61,9 @@ class UserController extends ApiController{
         }
         if($result){
             $user = $this->getTableObj()->getUser($register->email);
-            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(2, $user));
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(2), $user);
         }
-        return $this->prepareResponse(Dto\ErrorDto::prepareError(103));
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(103), null);
         
     }
     
@@ -80,7 +80,7 @@ class UserController extends ApiController{
         $subject = "Password recovery";
         $password =$this->getTableObj()->getCredential($userMail);
         if(!$password){
-             return $this->prepareResponse(Dto\ErrorDto::prepareError(104));
+             return $this->prepareResponse(Dto\ErrorDto::prepareError(104), null);
         }
         $message = '<html><head>
                     <title>Forgot Password</title>
@@ -141,9 +141,9 @@ class UserController extends ApiController{
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         
           if(mail($userMail, $subject, $message,$headers)){
-              return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(3,null));
+              return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(3), null);
           }
-          return $this->prepareResponse(Dto\ErrorDto::prepareError(104));
+          return $this->prepareResponse(Dto\ErrorDto::prepareError(104), null);
        
     }
     

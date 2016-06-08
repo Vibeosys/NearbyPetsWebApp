@@ -16,7 +16,8 @@ class ErrorDto {
     
     public $errorCode;
     public $message;
-    public $data;
+   // public $data;
+    //public $settings;
 
 
     //format {"errorCode":"100", "message":"User is not authenticated"}
@@ -25,18 +26,18 @@ class ErrorDto {
         $errorDto = new ErrorDto();
         $errorDto->errorCode = $errorcode;
         $errorDto->message = $errorDto->errorDictionary[$errorcode];
-        $errorDto->data = null;
-        $error[0] = $errorDto;
+       // $errorDto->data = null;
+        $error = $errorDto;
         return $error;//json_encode($error);
     }
     
-     public static function prepareSuccessMessage($successCode, $data) {
+     public static function prepareSuccessMessage($successCode) {
         
         $errorDto = new ErrorDto();
         $errorDto->errorCode = 0;
         $errorDto->message = $errorDto->SuccessDictionary[$successCode];
-        $errorDto->data = $data;
-        $error[0] = $errorDto;
+      //  $errorDto->data = $data;
+        $error = $errorDto;
         return $error;//json_encode($error);
     }
     

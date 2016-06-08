@@ -15,7 +15,7 @@ namespace App\Dto\DownloadDto;
  */
 class PetDownloadDto {
     
-    public  $title;
+    public $title;
     public $price;
     public $description;
     

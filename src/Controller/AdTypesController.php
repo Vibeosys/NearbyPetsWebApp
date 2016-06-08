@@ -22,8 +22,8 @@ class AdTypesController extends Apicontroller{
     public function getAdTypes() {
        $result = $this->getTableObj()->getAll();
        if(empty($result))
-       return $this->prepareResponse(Dto\ErrorDto::prepareError(112));
+       return $this->prepareResponse(Dto\ErrorDto::prepareError(112), null);
        else
-       return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(13, $result)); 
+       return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(13), $result); 
     }
 }

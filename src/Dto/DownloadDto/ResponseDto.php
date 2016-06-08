@@ -15,11 +15,13 @@ namespace App\Dto\DownloadDto;
  */
 class ResponseDto {
     
+    public $error;
     public $settings;
     public $data;
     
-    public function __construct($settings = null,$data = null) {
+    public function __construct($settings = null,$data = null, $error = null) {
         $this->settings = $settings;
         $this->data = $data;
+        $this->error = $error;
     }
 }

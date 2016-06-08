@@ -41,9 +41,9 @@ class UploadController extends Apicontroller {
                         $postedAdLocationRequest = UploadDto\PostedAdLocationRequest::Deserialize($row->operationData);
                         $data = $this->searchPostedAdListForLocation($postedAdLocationRequest);
                         if(empty($data)){
-                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
                         }else{
-                            $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $data);
                         }
                         $this->response->body($response);
                         break;
@@ -52,9 +52,9 @@ class UploadController extends Apicontroller {
                         $postedAdLocationRequest = UploadDto\SavedAdLocationRequest::Deserialize($row->operationData);
                         $data = $this->getUserSavedAd($postedAdLocationRequest);
                         if(empty($data)){
-                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
                         }else{
-                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $data);
                         }
                         $this->response->body($response);
                         break;
@@ -63,9 +63,9 @@ class UploadController extends Apicontroller {
                         $postedAdLocationRequest = UploadDto\CategoryWisePostedAdsdto::Deserialize($row->operationData);
                         $data = $this->categoryWisePostedAds($postedAdLocationRequest);
                        if(empty($data)){
-                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
                         }else{
-                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $data);
                         }
                         $this->response->body($response);
                         break;
@@ -74,9 +74,9 @@ class UploadController extends Apicontroller {
                         $postedAdLocationRequest = UploadDto\UserPosedAdDto::Deserialize($row->operationData);
                         $data = $this->myUserPostedAds($postedAdLocationRequest);
                         if(empty($data)){
-                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
                         }else{
-                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $data);
                         }
                         $this->response->body($response);
                         break;
@@ -85,9 +85,9 @@ class UploadController extends Apicontroller {
                         $request = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
                         $data = $this->productDescription($request->adId);
                         if(is_null($data)){
-                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111));
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
                         }else{
-                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11, $data));
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $data);
                               $this->adViews($requestEncode->user,$request->adId);
                         }
                         $this->response->body($response);
@@ -97,9 +97,9 @@ class UploadController extends Apicontroller {
                         $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
                         $result = $this->userLogin($credential);
                         if ($result) {
-                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(1, $result)));
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(1), $result));
                         } else {
-                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(101)));
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(101), null));
                         }
                         break;
                     case $this->apiOperation['CL']:
@@ -141,7 +141,7 @@ class UploadController extends Apicontroller {
                     case $this->apiOperation['DP']:
                         $isUser = $this->isUser($requestEncode->user,2);
                         if (!$isUser) {
-                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
                             return;
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
@@ -151,7 +151,7 @@ class UploadController extends Apicontroller {
                     case $this->apiOperation['SOP']:
                         $isUser = $this->isUser($requestEncode->user,2);
                         if (!$isUser) {
-                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
                             return;
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
@@ -160,15 +160,15 @@ class UploadController extends Apicontroller {
                     case $this->apiOperation['SS']:
                         $isAdminUser = $this->isAdminUser($requestEncode->user);
                         if (!$isAdminUser) {
-                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
                             return;
                         }
                         $saveSettingsArray = DownloadDto\ConfigSettingsDownloadDto::DeserializeArray($row->operationData);
                         $saveResult = $this->saveConfigSettins($saveSettingsArray);
                         if ($saveResult) {
-                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(8, null)));
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(8), null));
                         } else {
-                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(107)));
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(107), null));
                         }
                         //$this->response->body($response);
                         break;
@@ -258,9 +258,9 @@ class UploadController extends Apicontroller {
         $favoriteAdsController = new FavoriteAdsController();
         $result = $favoriteAdsController->saveAnAd($saveAnAdRequest);
         if($result){
-            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(10, NULL));
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(10), NULL);
         }
-        return $this->prepareResponse(Dto\ErrorDto::prepareError(110));
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(110), NULL);
     }
     
     public function getUserSavedAd($savedAdLocationRequest) {

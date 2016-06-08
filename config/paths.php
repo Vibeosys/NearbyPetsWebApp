@@ -40,7 +40,7 @@ define('ROOT', dirname(__DIR__));
 /**
  * The applications default bucket.
  */
-define('GCS_ROOT', 'gs://nearby-pets-web-app');
+define('GCS_ROOT', 'gs://nearby-ads');
 
 /**
  * The actual directory name for the application directory. Normally

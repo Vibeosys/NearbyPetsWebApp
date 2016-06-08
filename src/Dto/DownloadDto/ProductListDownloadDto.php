@@ -21,7 +21,7 @@ class ProductListDownloadDto {
     public $price;
     public $distance;
     public $image;
-    public $date;
+    public $postedDate;
 
 
     public function __construct($name = null, $description = null, $price = null, 
@@ -32,6 +32,6 @@ class ProductListDownloadDto {
         $this->distance = $distance; 
         $this->image = $image;
         $this->adid = $adid;
-        $this->date = $date;
+        $this->postedDate = $date;
     }
 }

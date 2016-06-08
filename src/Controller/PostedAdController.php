@@ -29,9 +29,9 @@ class PostedAdController extends Apicontroller {
         $status = $statusController->getAdStatus($this->postedAdStatus[$request->status]);
         $result = $this->getTableObj()->updateSatus($request->adId, $status);
         if ($result) {
-            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(4, null));
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(4), null);
         }
-        return $this->prepareResponse(Dto\ErrorDto::prepareError(106));
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(106), null);
     }
 
     public function searchAdsForLocation($postedAdLocationRequest) {
@@ -56,9 +56,9 @@ class PostedAdController extends Apicontroller {
             }
             $postedAdImages = new PostedAdImagesController();
             $postedAdImages->saveAdImages($images);
-            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(9, null));
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(9), null);
         }
-        return $this->prepareResponse(Dto\ErrorDto::prepareError(109));
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(109), null);
     }
     
     public function uploadImages($images,$userId) {

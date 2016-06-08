@@ -17,6 +17,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use App\Dto;
 use App\Dto\DownloadDto;
+use PDOException;
 
 class UserTable extends Table{
     
@@ -49,7 +50,7 @@ class UserTable extends Table{
     }
     
     public function getCredential($email) {
-        $conditions = ['UserEmail' => $email];
+        $conditions = ['UserEmail' => $email, 'LoginSource' => 1];
         $data = $this->connect()->find()->where($conditions);
         if($data->count()){
         foreach ($data as $row){
@@ -98,7 +99,11 @@ class UserTable extends Table{
     }
     public function getUser($email) {
         $conditions = ['UserEmail' => $email];
-        $data = $this->connect()->find()->where($conditions);
+        try{
+            $data = $this->connect()->find()->where($conditions);
+        }catch (PDOException $ex){
+            return FALSE;
+        }
         if($data->count()){
             foreach ($data as $row){
                 $result = new DownloadDto\UserProfileDownloadDto($row->FirstName,
