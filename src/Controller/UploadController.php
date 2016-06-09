@@ -176,6 +176,19 @@ class UploadController extends Apicontroller {
                         $adDetails = UploadDto\PostedAdUploadDto::Deserialize($row->operationData);
                         $this->response->body($this->postAd($adDetails));
                         break;
+                    case $this->apiOperation['GHA']:
+                        $isAdminUser = $this->isAdminUser($requestEncode->user);
+                        if (!$isAdminUser) {
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
+                            return;
+                        }
+                        $result = $this->getHiddenAds();
+                        $this->response->body($result);
+                        break;
+                    default :
+                        $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(404), null));
+                        return;
+                        break;
                 }
             }
         }
@@ -286,6 +299,11 @@ class UploadController extends Apicontroller {
     public function adViews($user, $adId) {
          $postedAdController = new PostedAdController();
          return $postedAdController->addViewToAd($user->userId, $adId);
+    }
+    
+    public function getHiddenAds() {
+       $postedAdController = new PostedAdController();
+       return $postedAdController->getHiddenAds();
     }
 
 }

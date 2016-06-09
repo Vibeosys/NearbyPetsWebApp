@@ -119,7 +119,7 @@ class PostedAdTable extends Table {
                     $newAd = new DownloadDto\ProductListDownloadDto();
                     $newAd->adid = $procRecord['AdId'];
                     $date = new \Cake\I18n\Date($procRecord['PostedDate']);
-                    $newAd->date = $date;
+                    $newAd->postedDate = $date;
                     $newAd->description = $procRecord['Description'];
                     $newAd->name = $procRecord['AdTitle'];
                     $newAd->price = $procRecord['Price'];
@@ -156,7 +156,7 @@ class PostedAdTable extends Table {
                     $newAd = new DownloadDto\ProductListDownloadDto();
                     $newAd->adid = $procRecord['AdId'];
                     $date = new \Cake\I18n\Date($procRecord['PostedDate']);
-                    $newAd->date = $date;
+                    $newAd->postedDate = $date;
                     $newAd->description = $procRecord['Description'];
                     $newAd->name = $procRecord['AdTitle'];
                     $newAd->price = $procRecord['Price'];
@@ -173,7 +173,7 @@ class PostedAdTable extends Table {
     
     public function CategoryWiseAdCallProcedureByDefaultPhp($postedAdLocationRequest) {
         $name = "getCategoryWisePostedAdList";
-        $parameters = "'" . $postedAdLocationRequest->categoryId . "','" .$postedAdLocationRequest->latitude . "','" .
+        $parameters = "'" . $postedAdLocationRequest->categoryId . "','" .$postedAdLocationRequest->search. "','" .$postedAdLocationRequest->latitude . "','" .
                 $postedAdLocationRequest->longitude . "','" . $postedAdLocationRequest->sortChoice . "','" .
                 $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . "";
         $datasource = ConnectionManager::config('default');
@@ -192,7 +192,7 @@ class PostedAdTable extends Table {
                     $newAd = new DownloadDto\ProductListDownloadDto();
                     $newAd->adid = $procRecord['AdId'];
                      $date = new \Cake\I18n\Date($procRecord['PostedDate']);
-                    $newAd->date = $date;
+                    $newAd->postedDate = $date;
                     $newAd->description = $procRecord['Description'];
                     $newAd->name = $procRecord['AdTitle'];
                     $newAd->price = $procRecord['Price'];
@@ -228,7 +228,7 @@ class PostedAdTable extends Table {
                     $newAd = new DownloadDto\ProductListDownloadDto();
                     $newAd->adid = $procRecord['AdId'];
                      $date = new \Cake\I18n\Date($procRecord['PostedDate']);
-                    $newAd->date = $date;
+                    $newAd->postedDate = $date;
                     $newAd->description = $procRecord['Description'];
                     $newAd->name = $procRecord['AdTitle'];
                     $newAd->price = $procRecord['Price'];
@@ -314,6 +314,28 @@ class PostedAdTable extends Table {
         }}
         return $adResult;
         //$this->connect()->get($adId)->;
+    }
+    
+    public function getHidden($status) {
+        $conditions = ['StatusId  =' => $status ];
+        $rows = $this->connect()->find()->where($conditions);
+        $hiddenAds = array();
+        if($rows->count()){
+            $counter = 0;
+            foreach ($rows as $row){
+              $hiddenAds[$counter++] = new DownloadDto\ProductListDownloadDto(
+                      $row->AdTitle, 
+                      $row->Description, 
+                      $row->Price, 
+                      $row->Distance, 
+                      $row->DisplayImgUrl, 
+                      $row->AdId, 
+                      $row->PostedDate);  
+                
+            }
+        }
+        return $hiddenAds;
+        
     }
     
     public function updateAdImage($adId, $img) {

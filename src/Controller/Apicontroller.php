@@ -36,13 +36,14 @@ class Apicontroller extends AppController {
         'DP' => 'DisablePost',
         'SOP' => 'SoldOutPost',
         'CS' => 'ChangeStatus',
-        'PD' => 'ProductDescription'
+        'PD' => 'ProductDescription',
+        'GHA' => 'GetHiddenAds'
     ];
     
     public $postedAdStatus = [
-        'SoldOut' => '1' ,
-        'Disabled' => '2',
-        'Hidden' => '3'
+        '1' => 'Sold Out' ,
+        '2' => 'Disabled' ,
+        '3' => 'Hidden' 
     ];
     
     public $sortOpetions = [
@@ -62,7 +63,7 @@ class Apicontroller extends AppController {
         $settings = $configController->getConfigSettings();
         if(!is_null($data))
             $data = json_encode($data);
-        if($error->errorCode == 500)
+        if($error->errorCode == 500 or $error->errorCode == 404)
         $result = new DownloadDto\ResponseDto(null, $data, $error);
         else
         $result = new DownloadDto\ResponseDto($settings, $data, $error);    

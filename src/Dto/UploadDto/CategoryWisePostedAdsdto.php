@@ -16,10 +16,13 @@ namespace App\Dto\UploadDto;
 class CategoryWisePostedAdsdto extends SavedAdLocationRequest{
     
     public $categoryId;
-    
+    public $search;
+
+
     public function __construct($latitude = NULL, $longitude = NULL, $sortOption = 0,
-             $sortChoice = 'DESC', $pageNumber = 1,$categoryId = null) {
+             $sortChoice = 'DESC', $pageNumber = 1,$categoryId = null, $serach = null) {
         $this->categoryId = $categoryId;
+        $this->search = $serach;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->sortChoice = $sortChoice;

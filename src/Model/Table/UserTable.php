@@ -71,7 +71,7 @@ class UserTable extends Table {
         $newEntity->LoginSource = $register->source;
         $newEntity->FbApiToken = $register->token;
         $newEntity->CreatedDate = date(DATE_TIME_FORMAT);
-        $newEntity->RoleId = 1;
+        $newEntity->RoleId = 2;
         $newEntity->Active = 1;
         if ($Obj->save($newEntity)) {
             return true;
