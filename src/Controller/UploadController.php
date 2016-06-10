@@ -135,6 +135,7 @@ class UploadController extends Apicontroller {
                             return;
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
+                        $changeStatus->status = 3;
                         $this->response->body($this->changeStatus($changeStatus));
                         break;
                     
@@ -145,6 +146,7 @@ class UploadController extends Apicontroller {
                             return;
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
+                         $changeStatus->status = 2;
                         $this->response->body($this->changeStatus($changeStatus));
                         break;
                     
@@ -155,6 +157,7 @@ class UploadController extends Apicontroller {
                             return;
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
+                         $changeStatus->status = 1;
                         $this->response->body($this->changeStatus($changeStatus));
                         break;
                     case $this->apiOperation['SS']:
