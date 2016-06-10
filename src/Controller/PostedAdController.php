@@ -122,5 +122,9 @@ class PostedAdController extends Apicontroller {
     public function addViewToAd($userId, $adId) {
         return $this->getTableObj()->updateView($userId, $adId);
     }
+    
+    public function statusChangeRightsCheck($adId, $userId) {
+        return $this->getTableObj()->isSameUser($adId, $userId);
+    }
 
 }

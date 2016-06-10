@@ -39,6 +39,19 @@ class PostedAdTable extends Table {
         }
         return FALSE;
     }
+    
+    public function isSameUser($adId, $userId) {
+        $conditions = [
+            'Adid =' => $adId,
+            'UserId =' => $userId
+        ];
+        
+        $rows = $this->connect()->find()->where($conditions);
+        if($rows->count()){
+            return true;
+        }
+        return FALSE;
+    }
 
     public function searchPostedAdsForLocation($postedAdLocationRequest) {
         /* $this->connection = ConnectionManager::get('default');

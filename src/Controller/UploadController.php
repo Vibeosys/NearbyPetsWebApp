@@ -136,7 +136,7 @@ class UploadController extends Apicontroller {
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
                         $changeStatus->status = 3;
-                        $this->response->body($this->changeStatus($changeStatus));
+                        $this->response->body($this->changeHideStatus($changeStatus));
                         break;
                     
                     case $this->apiOperation['DP']:
@@ -147,7 +147,7 @@ class UploadController extends Apicontroller {
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
                          $changeStatus->status = 2;
-                        $this->response->body($this->changeStatus($changeStatus));
+                        $this->response->body($this->changeStatus($changeStatus, $requestEncode->user));
                         break;
                     
                     case $this->apiOperation['SOP']:
@@ -158,7 +158,7 @@ class UploadController extends Apicontroller {
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
                          $changeStatus->status = 1;
-                        $this->response->body($this->changeStatus($changeStatus));
+                        $this->response->body($this->changeStatus($changeStatus, $requestEncode->user));
                         break;
                     case $this->apiOperation['SS']:
                         $isAdminUser = $this->isAdminUser($requestEncode->user);
@@ -250,7 +250,16 @@ class UploadController extends Apicontroller {
         return $userController->getUserProfile($credential->email);
     }
 
-    private function changeStatus($changeStatus) {
+    private function changeStatus($changeStatus, $user) {
+        
+        $postedAdController = new PostedAdController();
+        $isSame = $postedAdController->statusChangeRightsCheck($changeStatus->adId, $user->userId);
+        if (!$isSame) {
+          return  $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
+        }
+        return $postedAdController->changeAdStatus($changeStatus);
+    }
+    private function changeHideStatus($changeStatus) {
         $postedAdController = new PostedAdController();
         return $postedAdController->changeAdStatus($changeStatus);
     }
