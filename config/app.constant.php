@@ -15,4 +15,12 @@ define('NORMAL_LOGIN', 1);
 
 define('FB_LOGIN', 2);
 
+define('SOLD_OUT_AD', 1);
+
+define('DISABLE_AD', 2);
+
+define('HIDE_AD', 3);
+
+
+
 

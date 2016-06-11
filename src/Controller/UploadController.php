@@ -140,7 +140,7 @@ class UploadController extends Apicontroller {
                             return;
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
-                        $changeStatus->status = 3;
+                        $changeStatus->status = HIDE_AD;
                         $this->response->body($this->changeHideStatus($changeStatus));
                         break;
                     
@@ -151,7 +151,7 @@ class UploadController extends Apicontroller {
                             return;
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
-                         $changeStatus->status = 2;
+                         $changeStatus->status = DISABLE_AD;
                         $this->response->body($this->changeStatus($changeStatus, $requestEncode->user));
                         break;
                     
@@ -162,7 +162,7 @@ class UploadController extends Apicontroller {
                             return;
                         }
                         $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
-                         $changeStatus->status = 1;
+                         $changeStatus->status = SOLD_OUT_AD;
                         $this->response->body($this->changeStatus($changeStatus, $requestEncode->user));
                         break;
                     case $this->apiOperation['SS']:
