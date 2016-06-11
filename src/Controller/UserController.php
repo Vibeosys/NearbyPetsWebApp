@@ -22,13 +22,6 @@ class UserController extends ApiController {
         return new Table\UserTable();
     }
 
-    public function test() {
-        $this->autoRender = FALSE;
-        $data['code'] = 1;
-        $data['msg'] = 'Route Access';
-        $this->response->body(json_encode($data));
-    }
-
     public function getUserProfile($email) {
         $result = $this->getTableObj()->getUser($email);
         if ($result) {
@@ -68,15 +61,6 @@ class UserController extends ApiController {
     }
 
     public function passwordRecovery($userMail) {
-        $this->autoRender = FALSE;
-        /*
-          $email = new Email();
-          $email->to($userMail);
-          $email->from('veerniteen@gmail.com');
-          $email->subject('Password recovery');
-          $email->template('forgot_password');
-          $email->emailFormat('html');
-          $email->set('password','123456'); */
         $subject = "Password recovery";
         $password = $this->getTableObj()->getCredential($userMail);
         if (!$password) {
@@ -148,7 +132,7 @@ class UserController extends ApiController {
 
     public function isAdmin($credential) {
         $this->autoRender = FALSE;
-        $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, 1);
+        $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, APP_ADMIN_USER);
         return $result;
     }
 

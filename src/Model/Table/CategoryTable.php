@@ -41,7 +41,10 @@ class CategoryTable extends Table {
     public function getCategoryAdsList() {
         $name = "getCategoryAdList";
         $datasource = ConnectionManager::config('default');
-        $connection = mysql_connect($datasource['host'], $datasource['username'], $datasource['password']);
+        $connection = mysql_connect(
+                $datasource['host'], 
+                $datasource['username'], 
+                $datasource['password']);
         mysql_select_db($datasource['database'], $connection);
         $query = "call " . $name . "();";
         $result = mysql_query($query);
