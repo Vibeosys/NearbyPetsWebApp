@@ -152,7 +152,7 @@ class PostedAdTable extends Table {
         $parameters = "'" . $postedAdLocationRequest->latitude . "','" .
                 $postedAdLocationRequest->longitude . "','" . $postedAdLocationRequest->sortChoice . "','" .
                 $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . ",'" . 
-                $postedAdLocationRequest->userId . "'";
+                $postedAdLocationRequest->userId . "','" . $postedAdLocationRequest->search . "'";
         $datasource = ConnectionManager::config('default');
         $connection = mysql_connect($datasource['host'], $datasource['username'], $datasource['password']);
         mysql_select_db($datasource['database'], $connection);
@@ -224,7 +224,8 @@ class PostedAdTable extends Table {
         $name = "getUserPostedAdList";
         $parameters = "'" . $postedAdLocationRequest->userId . "','" .$postedAdLocationRequest->latitude . "','" .
                 $postedAdLocationRequest->longitude . "','" . $postedAdLocationRequest->sortChoice . "','" .
-                $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . "";
+                $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . ",'" .
+                $postedAdLocationRequest->search . "'";
         $datasource = ConnectionManager::config('default');
         $connection = mysql_connect($datasource['host'], $datasource['username'], $datasource['password']);
         mysql_select_db($datasource['database'], $connection);
@@ -329,8 +330,12 @@ class PostedAdTable extends Table {
         //$this->connect()->get($adId)->;
     }
     
-    public function getHidden($status) {
-        $conditions = ['StatusId  =' => $status ];
+    public function getHidden($search, $status) {
+        $conditions = [
+            'StatusId  =' => $status,
+            'AdTitle LIKE' => '%'.$search.'%',   
+            'Description LIKE' => '%'.$search.'%'   
+            ];
         $rows = $this->connect()->find()->where($conditions);
         $hiddenAds = array();
         if($rows->count()){

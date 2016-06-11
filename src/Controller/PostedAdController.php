@@ -92,9 +92,9 @@ class PostedAdController extends Apicontroller {
         return $result;
     }
     
-    public function getHiddenAds() {
+    public function getHiddenAds($hidden) {
         $status = 3 ;// $this->postedAdStatus['hidden'];
-        $result = $this->getTableObj()->getHidden($status);
+        $result = $this->getTableObj()->getHidden($hidden->search, $status);
         if(empty($result)){
             return $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
         }

@@ -21,14 +21,17 @@ class SavedAdLocationRequest extends Dto\JsonDeserializer{
     public $sortChoice;  // Sort choise is ASC or DESC
     public $pageNumber;
     public $userId;
-    
-     public function __construct($latitude = NULL, $longitude = NULL, $sortOption = 0,
-             $sortChoice = 'DESC', $pageNumber = 1,$userId = null) {
+    public $search;
+
+
+    public function __construct($latitude = NULL, $longitude = NULL, $sortOption = 0,
+             $sortChoice = 'DESC', $pageNumber = 1,$userId = null, $search = "") {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->sortChoice = $sortChoice;
         $this->sortOption = $sortOption;
         $this->pageNumber = $pageNumber;
         $this->userId = $userId;
+        $this->search = $search;
     }
 }

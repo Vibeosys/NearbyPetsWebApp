@@ -185,7 +185,8 @@ class UploadController extends Apicontroller {
                             $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
                             return;
                         }
-                        $result = $this->getHiddenAds();
+                        $hidden = UploadDto\HiddenAdUploadDto::Deserialize($row->operationData);
+                        $result = $this->getHiddenAds($hidden);
                         $this->response->body($result);
                         break;
                     default :
@@ -313,9 +314,9 @@ class UploadController extends Apicontroller {
          return $postedAdController->addViewToAd($user->userId, $adId);
     }
     
-    public function getHiddenAds() {
+    public function getHiddenAds($hidden) {
        $postedAdController = new PostedAdController();
-       return $postedAdController->getHiddenAds();
+       return $postedAdController->getHiddenAds($hidden);
     }
 
 }

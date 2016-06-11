@@ -17,13 +17,15 @@ class UserPosedAdDto extends SavedAdLocationRequest{
     
     public $userId;
     
+    
     public function __construct($latitude = NULL, $longitude = NULL, $sortOption = 0,
-             $sortChoice = 'DESC', $pageNumber = 1,$userId = null) {
+             $sortChoice = 'DESC', $pageNumber = 1,$userId = null, $search = "") {
         $this->userId = $userId;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->sortChoice = $sortChoice;
         $this->sortOption = $sortOption;
         $this->pageNumber = $pageNumber;
+        $this->search = $search;
     }
 }
