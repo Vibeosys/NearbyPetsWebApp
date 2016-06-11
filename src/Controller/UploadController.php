@@ -25,8 +25,8 @@ class UploadController extends Apicontroller {
             $request = $this->request->input();
             $requestEncode = UploadDto\RequestDto::Deserialize($request);
             if(isset($requestEncode->user->email)){
-            $isUser = $this->isUser($requestEncode->user,2);
-            $isAdmin = $this->isUser($requestEncode->user,1);
+            $isUser = $this->isUser($requestEncode->user,APP_CUSTOM_USER);
+            $isAdmin = $this->isUser($requestEncode->user,APP_ADMIN_USER);
             if (!$isUser and !$isAdmin) {
                 $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
                 return;
@@ -121,7 +121,7 @@ class UploadController extends Apicontroller {
                         $this->response->body($this->getAdType());
                         break;
                     case $this->apiOperation['SAA']:
-                        $isUser = $this->isUser($requestEncode->user,1);
+                        $isUser = $this->isUser($requestEncode->user,APP_ADMIN_USER);
                         if ($isUser) {
                             $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
                             return;
@@ -134,7 +134,7 @@ class UploadController extends Apicontroller {
                         $this->response->body($this->getProfile($credential));
                         break;
                     case $this->apiOperation['HP']:
-                        $isUser = $this->isUser($requestEncode->user,1);
+                        $isUser = $this->isUser($requestEncode->user,APP_ADMIN_USER);
                         if (!$isUser) {
                             $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
                             return;
@@ -145,7 +145,7 @@ class UploadController extends Apicontroller {
                         break;
                     
                     case $this->apiOperation['DP']:
-                        $isUser = $this->isUser($requestEncode->user,2);
+                        $isUser = $this->isUser($requestEncode->user,APP_CUSTOM_USER);
                         if (!$isUser) {
                             $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
                             return;
@@ -156,7 +156,7 @@ class UploadController extends Apicontroller {
                         break;
                     
                     case $this->apiOperation['SOP']:
-                        $isUser = $this->isUser($requestEncode->user,2);
+                        $isUser = $this->isUser($requestEncode->user,APP_CUSTOM_USER);
                         if (!$isUser) {
                             $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
                             return;

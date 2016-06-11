@@ -48,7 +48,10 @@ class UserTable extends Table {
     }
 
     public function getCredential($email) {
-        $conditions = ['UserEmail' => $email, 'LoginSource' => 1];
+        $conditions = [
+            'UserEmail' => $email, 
+            'LoginSource' => NORMAL_LOGIN
+            ];
         $data = $this->connect()->find()->where($conditions);
         if ($data->count()) {
             foreach ($data as $row) {
@@ -71,7 +74,7 @@ class UserTable extends Table {
         $newEntity->LoginSource = $register->source;
         $newEntity->FbApiToken = $register->token;
         $newEntity->CreatedDate = date(DATE_TIME_FORMAT);
-        $newEntity->RoleId = 2;
+        $newEntity->RoleId = APP_CUSTOM_USER;
         $newEntity->Active = 1;
         if ($Obj->save($newEntity)) {
             return true;
@@ -104,7 +107,15 @@ class UserTable extends Table {
         }
         if ($data->count()) {
             foreach ($data as $row) {
-                $result = new DownloadDto\UserProfileDownloadDto($row->FirstName, $row->LastName, $row->UserEmail, $row->Phone, $row->UserId, $row->RoleId, $row->Pwd, $row->FbApiToken);
+                $result = new DownloadDto\UserProfileDownloadDto(
+                        $row->FirstName, 
+                        $row->LastName, 
+                        $row->UserEmail, 
+                        $row->Phone, 
+                        $row->UserId, 
+                        $row->RoleId, 
+                        $row->Pwd, 
+                        $row->FbApiToken);
             }
             return $result;
         }
@@ -112,7 +123,11 @@ class UserTable extends Table {
     }
 
     public function checkCredentialsWithRole($email, $pwd, $roleId) {
-        $conditions = ['UserEmail' => $email, 'Pwd' => $pwd, 'RoleId' => $roleId, 'Active' => 1];
+        $conditions = [
+            'UserEmail' => $email, 
+            'Pwd' => $pwd, 
+            'RoleId' => $roleId, 
+            'Active' => 1];
         $data = $this->connect()->find()->where($conditions);
         if ($data->count()) {
             return true;
@@ -121,7 +136,10 @@ class UserTable extends Table {
     }
 
     public function checkValidFbUser($token, $role) {
-        $conditions = ['FbApiToken' => $token, 'RoleId' => $role, 'Active' => 1];
+        $conditions = [
+            'FbApiToken' => $token, 
+            'RoleId' => $role, 
+            'Active' => 1];
         $data = $this->connect()->find()->where($conditions);
         if ($data->count()) {
             return true;

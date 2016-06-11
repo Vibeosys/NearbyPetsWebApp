@@ -50,7 +50,7 @@ class UserController extends ApiController {
     public function register($register) {
         $this->autoRender = FALSE;
         $is_present = $this->getTableObj()->is_present($register->email);
-        if ($is_present and $register->source == 1) {
+        if ($is_present and $register->source == NORMAL_LOGIN) {
             return $this->prepareResponse(Dto\ErrorDto::prepareError(102), null);
         }
         if ($is_present) {
