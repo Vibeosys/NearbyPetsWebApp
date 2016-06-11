@@ -24,7 +24,7 @@ class FavoriteAdsTable extends Table {
     }
 
     public function saveAnAd($favouriteAdRequest) {
-        $favouriteAdEntity = $this->newEntity();
+        $favouriteAdEntity = $this->connect()->newEntity();
         $favouriteAdEntity->AdId = $favouriteAdRequest->adId;
         $favouriteAdEntity->UserId = $favouriteAdRequest->userId;
         $favouriteAdEntity->CreatedDate = date(DATE_TIME_FORMAT);

@@ -18,7 +18,6 @@ class FavoriteAdsController extends Apicontroller{
     //put your code here
     public function saveAnAd($saveAnAdRequest)
     {
-        $this->autoRender = FALSE;
         $tableObj = new Table\FavoriteAdsTable();
         return $tableObj->saveAnAd($saveAnAdRequest);
     }

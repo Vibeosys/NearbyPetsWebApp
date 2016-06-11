@@ -121,6 +121,11 @@ class UploadController extends Apicontroller {
                         $this->response->body($this->getAdType());
                         break;
                     case $this->apiOperation['SAA']:
+                        $isUser = $this->isUser($requestEncode->user,1);
+                        if ($isUser) {
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                            return;
+                        }
                         $saveAnRequest = UploadDto\SaveAnAdDto::Deserialize($row->operationData);
                         $this->response->body($this->saveAnAd($saveAnRequest));
                         break;
@@ -129,7 +134,7 @@ class UploadController extends Apicontroller {
                         $this->response->body($this->getProfile($credential));
                         break;
                     case $this->apiOperation['HP']:
-                         $isUser = $this->isUser($requestEncode->user,1);
+                        $isUser = $this->isUser($requestEncode->user,1);
                         if (!$isUser) {
                             $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
                             return;
