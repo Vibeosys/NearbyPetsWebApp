@@ -146,5 +146,14 @@ class UserTable extends Table {
         }
         return FALSE;
     }
+    
+    public function updateInfo($update) {
+        $entity = $this->connect()->get($update->userId);
+        $entity->RadiusInKm = $update->radiusInKm;
+        if($this->connect()->save($entity)){
+            return true;
+        }
+        return FALSE;
+    }
 
 }

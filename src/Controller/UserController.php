@@ -59,6 +59,8 @@ class UserController extends ApiController {
         }
         return $this->prepareResponse(Dto\ErrorDto::prepareError(103), null);
     }
+    
+    
 
     public function passwordRecovery($userMail) {
         $subject = "Password recovery";
@@ -142,6 +144,14 @@ class UserController extends ApiController {
         }
         $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, $role);
         return $result;
+    }
+    
+    public function updateUser($update) {
+        $result = $this->getTableObj()->updateInfo($update);
+        if($result){
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(15), null);
+        }
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(114), null);
     }
 
 }

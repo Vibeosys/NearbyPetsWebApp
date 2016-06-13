@@ -56,6 +56,7 @@ class ErrorDto {
         111 => 'No ads found for the given criteria',
         112 => 'No data found.',
         113 => 'Sorry the email service is currently unavailable, please try after some time',
+        114 => 'Error while changing user setting.'
        ];
     protected $SuccessDictionary = [
         1 => 'Login Success',
@@ -71,7 +72,8 @@ class ErrorDto {
         11 => 'Ad found.',
         12 => 'categories are found.',
         13 => 'Types are found.',
-        14 => 'Requested profile found.'
+        14 => 'Requested profile found.',
+        15 => 'User radius settings changed.'
        ];
     
 }

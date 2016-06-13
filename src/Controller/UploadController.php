@@ -39,7 +39,7 @@ class UploadController extends Apicontroller {
 
                     case $this->apiOperation['PL']:
                         $postedAdLocationRequest = UploadDto\PostedAdLocationRequest::Deserialize($row->operationData);
-                        $data = $this->searchPostedAdListForLocation($postedAdLocationRequest);
+                        $data = $this->searchPostedAdListForLocation($postedAdLocationRequest, $requestEncode->user);
                         if(empty($data)){
                             $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
                         }else{
@@ -61,7 +61,7 @@ class UploadController extends Apicontroller {
                     
                     case $this->apiOperation['CPA']:
                         $postedAdLocationRequest = UploadDto\CategoryWisePostedAdsdto::Deserialize($row->operationData);
-                        $data = $this->categoryWisePostedAds($postedAdLocationRequest);
+                        $data = $this->categoryWisePostedAds($postedAdLocationRequest, $requestEncode->user);
                        if(empty($data)){
                             $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
                         }else{
@@ -194,6 +194,11 @@ class UploadController extends Apicontroller {
                         $result = $this->getHiddenAds($hidden);
                         $this->response->body($result);
                         break;
+                    case $this->apiOperation['UUR']:
+                        $userUpdate = UploadDto\UserUpdateUploadDto::Deserialize($row->operationData);
+                        $result = $this->updateUserRadius($userUpdate);
+                         $this->response->body($result);
+                        break;
                     default :
                         $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(404), null));
                         return;
@@ -202,7 +207,11 @@ class UploadController extends Apicontroller {
             }
         }
     }
-
+    
+    private function updateUserRadius($userUpdate) {
+        $userController = new UserController();
+        return $userController->updateUser($userUpdate);
+    }
     private function isAdminUser($credential) {
         $userController = new UserController();
         $isAdminUser = $userController->isAdmin($credential);
@@ -270,8 +279,9 @@ class UploadController extends Apicontroller {
         return $postedAdController->changeAdStatus($changeStatus);
     }
 
-    private function searchPostedAdListForLocation($postedAdLocationRequest) {
+    private function searchPostedAdListForLocation($postedAdLocationRequest, $user) {
         $postedAdController = new PostedAdController();
+        $postedAdLocationRequest->userId = $user->userId;
         return $postedAdController->searchAdsForLocation($postedAdLocationRequest);
     }
     
@@ -304,8 +314,9 @@ class UploadController extends Apicontroller {
         return $categoryController->getAdCategoryList();
     }
     
-    public function categoryWisePostedAds($savedAdLocationRequest) {
+    public function categoryWisePostedAds($savedAdLocationRequest, $user) {
          $postedAdController = new PostedAdController();
+         $savedAdLocationRequest->userId = $user->userId;
          return $postedAdController->getcategoryWiseAd($savedAdLocationRequest);
     }
     

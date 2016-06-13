@@ -114,7 +114,8 @@ class PostedAdTable extends Table {
 
     public function callProcedureByDefaultPhp($postedAdLocationRequest) {
         $name = "getPostedAdList";
-        $parameters = "'" . $postedAdLocationRequest->latitude . "','" .
+        $parameters = "'" . $postedAdLocationRequest->latitude . "','" . 
+                $postedAdLocationRequest->userId . "','" .
                 $postedAdLocationRequest->longitude . "','" . $postedAdLocationRequest->sortChoice . "','" .
                 $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . ",'" 
                 . $postedAdLocationRequest->search . "'";
@@ -187,7 +188,9 @@ class PostedAdTable extends Table {
     
     public function CategoryWiseAdCallProcedureByDefaultPhp($postedAdLocationRequest) {
         $name = "getCategoryWisePostedAdList";
-        $parameters = "'" . $postedAdLocationRequest->categoryId . "','" .$postedAdLocationRequest->search. "','" .$postedAdLocationRequest->latitude . "','" .
+        $parameters = "'" . $postedAdLocationRequest->categoryId . "','" . 
+                $postedAdLocationRequest->userId . "','" 
+                .$postedAdLocationRequest->search. "','" .$postedAdLocationRequest->latitude . "','" .
                 $postedAdLocationRequest->longitude . "','" . $postedAdLocationRequest->sortChoice . "','" .
                 $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . "";
         $datasource = ConnectionManager::config('default');

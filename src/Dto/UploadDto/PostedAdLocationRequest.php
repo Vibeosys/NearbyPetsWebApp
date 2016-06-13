@@ -22,6 +22,7 @@ class PostedAdLocationRequest extends Dto\JsonDeserializer {
     public $sortChoice;  // Sort choise is ASC or DESC
     public $pageNumber; 
     public $search;
+    public $userid;
 
 
     public function __construct($latitude = NULL, $longitude = NULL, $sortOption = 0, $sortChoice = 'DESC', $pageNumber = 1, $search = "") {

@@ -37,7 +37,8 @@ class Apicontroller extends AppController {
         'SOP' => 'SoldOutPost',
         'CS' => 'ChangeStatus',
         'PD' => 'ProductDescription',
-        'GHA' => 'GetHiddenAds'
+        'GHA' => 'GetHiddenAds',
+        'UUR' => 'UpdateUserRadius'
     ];
     
     public $postedAdStatus = [
