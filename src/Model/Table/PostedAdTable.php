@@ -116,7 +116,8 @@ class PostedAdTable extends Table {
         $name = "getPostedAdList";
         $parameters = "'" . $postedAdLocationRequest->latitude . "','" .
                 $postedAdLocationRequest->longitude . "','" . $postedAdLocationRequest->sortChoice . "','" .
-                $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . "";
+                $postedAdLocationRequest->sortOption . "'," . $postedAdLocationRequest->pageNumber . ",'" 
+                . $postedAdLocationRequest->search . "'";
         $datasource = ConnectionManager::config('default');
         $connection = mysql_connect($datasource['host'], $datasource['username'], $datasource['password']);
         mysql_select_db($datasource['database'], $connection);
