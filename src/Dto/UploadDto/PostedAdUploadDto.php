@@ -31,7 +31,7 @@ class PostedAdUploadDto extends Dto\JsonDeserializer{
 
     public function __construct($categoryId = null, $title = null, $description = null, 
             $address = null, $displayAddress = null, $lat = null, $long = null,
-            $price = null, $typeId = null, $userId = null, $images = null, $isAddress = null) {
+            $price = null, $typeId = null, $userId = null, $images = null, $isAddress = 1) {
         $this->categoryId = $categoryId;
         $this->title = $title;
         $this->description = $description;
