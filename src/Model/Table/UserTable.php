@@ -76,6 +76,7 @@ class UserTable extends Table {
         $newEntity->CreatedDate = date(DATE_TIME_FORMAT);
         $newEntity->RoleId = APP_CUSTOM_USER;
         $newEntity->Active = 1;
+        $newEntity->RadiusInKm = DEFAULT_RADIUS;
         if ($Obj->save($newEntity)) {
             return true;
         }
@@ -115,7 +116,8 @@ class UserTable extends Table {
                         $row->UserId, 
                         $row->RoleId, 
                         $row->Pwd, 
-                        $row->FbApiToken);
+                        $row->FbApiToken,
+                        $row->RadiusInKm);
             }
             return $result;
         }

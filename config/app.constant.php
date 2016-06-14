@@ -21,6 +21,8 @@ define('DISABLE_AD', 2);
 
 define('HIDE_AD', 3);
 
+define('DEFAULT_RADIUS', 10000);
+
 
 
 

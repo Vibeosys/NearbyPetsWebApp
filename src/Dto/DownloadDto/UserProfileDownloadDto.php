@@ -23,10 +23,11 @@ class UserProfileDownloadDto {
     public $roleid;
     public $pwd;
     public $token;
+    public $radiusInKm;
 
 
     public function __construct($fname= null, $lname = null ,$email = null, 
-            $phone = null,$userid =null, $roleid = null, $pwd = null, $token = null) {
+            $phone = null,$userid =null, $roleid = null, $pwd = null, $token = null, $radius = '10000') {
         
         $this->fname = $fname;
         $this->lname = $lname;
@@ -36,5 +37,6 @@ class UserProfileDownloadDto {
         $this->roleid = $roleid;
         $this->token = $token;
         $this->pwd = $pwd;
+        $this->radiusInKm = $radius;
     }
 }
