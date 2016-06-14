@@ -21,7 +21,15 @@ define('DISABLE_AD', 2);
 
 define('HIDE_AD', 3);
 
+define('NORMAL_AD', 0);
+
 define('DEFAULT_RADIUS', 10000);
+
+
+define('CITY_ADDRESS', 1);
+
+
+define('FULL_ADDRESS', 2);
 
 
 

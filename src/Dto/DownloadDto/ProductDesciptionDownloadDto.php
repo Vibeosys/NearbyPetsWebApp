@@ -24,11 +24,11 @@ class ProductDesciptionDownloadDto {
     public $name;
     public $phone;
     public $email;
+    public $isAddress;
     public $postedDate;
     public $adViews;
     public $latitude;
     public $longitude;
     public $images;   
-    
 
 }

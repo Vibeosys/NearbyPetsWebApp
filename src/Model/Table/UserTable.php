@@ -157,5 +157,18 @@ class UserTable extends Table {
         }
         return FALSE;
     }
+    
+    public function updateProfile($update) {
+        $entity = $this->connect()->get($update->userId);
+        $entity->UserEmail = $update->email;
+        $entity->FirstName = $update->fname;
+        $entity->LastName = $update->lname;
+        $entity->Phone = $update->phone;
+        $entity->Pwd = $update->pwd;
+        if($this->connect()->save($entity)){
+            return true;
+        }
+        return FALSE;
+    }
 
 }

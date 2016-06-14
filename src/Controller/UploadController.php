@@ -144,6 +144,17 @@ class UploadController extends Apicontroller {
                         $this->response->body($this->changeHideStatus($changeStatus));
                         break;
                     
+                    case $this->apiOperation['UHP']:
+                        $isUser = $this->isUser($requestEncode->user,APP_ADMIN_USER);
+                        if (!$isUser) {
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                            return;
+                        }
+                        $changeStatus = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
+                        $changeStatus->status = NORMAL_AD;
+                        $this->response->body($this->changeHideStatus($changeStatus));
+                        break;
+                        
                     case $this->apiOperation['DP']:
                         $isUser = $this->isUser($requestEncode->user,APP_CUSTOM_USER);
                         if (!$isUser) {
@@ -199,6 +210,12 @@ class UploadController extends Apicontroller {
                         $result = $this->updateUserRadius($userUpdate);
                          $this->response->body($result);
                         break;
+                    
+                    case $this->apiOperation['UPU']:
+                        $profileUpdate = UploadDto\UserProfileUpdateUploadDto::Deserialize($row->operationData);
+                        $result = $this->userProfileUpdate($profileUpdate);
+                        $this->response->body($result);
+                        break;
                     default :
                         $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(404), null));
                         return;
@@ -212,6 +229,12 @@ class UploadController extends Apicontroller {
         $userController = new UserController();
         return $userController->updateUser($userUpdate);
     }
+    
+    private function userProfileUpdate($profileUpdate) {
+        $userController = new UserController();
+        return $userController->updateUserProfile($profileUpdate);
+    }
+    
     private function isAdminUser($credential) {
         $userController = new UserController();
         $isAdminUser = $userController->isAdmin($credential);

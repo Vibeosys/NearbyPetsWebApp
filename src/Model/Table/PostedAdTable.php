@@ -280,6 +280,7 @@ class PostedAdTable extends Table {
         $entity->PostedDate = date(DATE_TIME_FORMAT);
         //$entity->DisplayImgUrl = 
         $entity->CategoryId = $postAd->categoryId;
+        $entity->AddressType = $postAd->isAddress;
 
         if ($obj->save($entity)) {
             return TRUE;
@@ -304,6 +305,7 @@ class PostedAdTable extends Table {
                 'Longitude',
                 'Address',
                 'DisplayAddress',
+                'AddressType',
                 'user.FirstName',
                 'user.LastName',
                 'user.Phone',
@@ -329,6 +331,7 @@ class PostedAdTable extends Table {
             $adResult->name = $adRecord->user->FirstName . " " . $adRecord->user->LastName;
             $adResult->phone = $adRecord->user->Phone;
             $adResult->email = $adRecord->user->UserEmail;
+            $adResult->isAddress = $adRecord->AddressType;
         }}
         return $adResult;
         //$this->connect()->get($adId)->;
