@@ -57,7 +57,8 @@ class ErrorDto {
         112 => 'No data found.',
         113 => 'Sorry the email service is currently unavailable, please try after some time',
         114 => 'Error while changing user setting.',
-        115 => 'Error while updating user profile.'
+        115 => 'Error while updating user profile.',
+        116 => 'Error occurred while removing favourite Ad.',
        ];
     protected $SuccessDictionary = [
         1 => 'Login Success',
@@ -75,7 +76,8 @@ class ErrorDto {
         13 => 'Types are found.',
         14 => 'Requested profile found.',
         15 => 'User radius settings changed.',
-        16 => 'User profile updated.'
+        16 => 'User profile updated.',
+        17 => 'Your ad removed from Favourite successfully.',
        ];
     
 }

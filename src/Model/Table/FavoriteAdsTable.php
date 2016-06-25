@@ -35,5 +35,18 @@ class FavoriteAdsTable extends Table {
         else
             return false;
     }
+    
+    public function removeSavedAd($favouriteAdRequest) {
+        $conditions = [
+            'AdId =' => $favouriteAdRequest->adId,
+            'UserId =' => $favouriteAdRequest->userId
+        ];
+        $delete = $this->connect()->query()->delete();
+        $delete->where($conditions);
+        if($delete->execute()){
+            return true;
+        }
+        return FALSE;
+    }
 
 }

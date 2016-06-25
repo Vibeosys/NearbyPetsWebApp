@@ -157,7 +157,8 @@ class UserController extends ApiController {
     public function updateUserProfile($update) {
         $result = $this->getTableObj()->updateProfile($update);
         if($result){
-            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(16), null);
+            
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(16), $this->getTableObj()->getUser(null, $update->userId));
         }
         return $this->prepareResponse(Dto\ErrorDto::prepareError(115), null);
     }

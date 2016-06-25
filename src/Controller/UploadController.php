@@ -28,9 +28,12 @@ class UploadController extends Apicontroller {
             $isUser = $this->isUser($requestEncode->user,APP_CUSTOM_USER);
             $isAdmin = $this->isUser($requestEncode->user,APP_ADMIN_USER);
             if (!$isUser and !$isAdmin) {
-                $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
                 return;
             }
+            }else{
+               $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
+                return; 
             }
 
             //$requestData = UploadDto\RequestDataDto::Deserialize($requestEncode->data);
@@ -48,6 +51,18 @@ class UploadController extends Apicontroller {
                         $this->response->body($response);
                         break;
                     
+                    case $this->apiOperation['PLI']:
+                        $postedAdLocationRequest = UploadDto\PostedAdLocationRequest::Deserialize($row->operationData);
+                        $data = $this->searchPostedAdListForLocation($postedAdLocationRequest, $requestEncode->user);
+                        if(empty($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
+                        }else{
+                            
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $this->productListIosConvertor($data));
+                        }
+                        $this->response->body($response);
+                        break;
+                        
                     case $this->apiOperation['GSA']:
                         $postedAdLocationRequest = UploadDto\SavedAdLocationRequest::Deserialize($row->operationData);
                         $data = $this->getUserSavedAd($postedAdLocationRequest);
@@ -58,6 +73,17 @@ class UploadController extends Apicontroller {
                         }
                         $this->response->body($response);
                         break;
+                        
+                    case $this->apiOperation['GSAI']:
+                        $postedAdLocationRequest = UploadDto\SavedAdLocationRequest::Deserialize($row->operationData);
+                        $data = $this->getUserSavedAd($postedAdLocationRequest);
+                        if(empty($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
+                        }else{
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $this->productListIosConvertor($data));
+                        }
+                        $this->response->body($response);
+                        break;    
                     
                     case $this->apiOperation['CPA']:
                         $postedAdLocationRequest = UploadDto\CategoryWisePostedAdsdto::Deserialize($row->operationData);
@@ -70,6 +96,17 @@ class UploadController extends Apicontroller {
                         $this->response->body($response);
                         break;
                     
+                    case $this->apiOperation['CPAI']:
+                        $postedAdLocationRequest = UploadDto\CategoryWisePostedAdsdto::Deserialize($row->operationData);
+                        $data = $this->categoryWisePostedAds($postedAdLocationRequest, $requestEncode->user);
+                       if(empty($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
+                        }else{
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $this->productListIosConvertor($data));
+                        }
+                        $this->response->body($response);
+                        break;
+                        
                     case $this->apiOperation['MPA']:
                         $postedAdLocationRequest = UploadDto\UserPosedAdDto::Deserialize($row->operationData);
                         $data = $this->myUserPostedAds($postedAdLocationRequest);
@@ -80,6 +117,17 @@ class UploadController extends Apicontroller {
                         }
                         $this->response->body($response);
                         break;
+                        
+                    case $this->apiOperation['MPAI']:
+                        $postedAdLocationRequest = UploadDto\UserPosedAdDto::Deserialize($row->operationData);
+                        $data = $this->myUserPostedAds($postedAdLocationRequest);
+                        if(empty($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
+                        }else{
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $this->productListIosConvertor($data));
+                        }
+                        $this->response->body($response);
+                        break;    
                     
                     case $this->apiOperation['PD']:
                         $request = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
@@ -93,6 +141,19 @@ class UploadController extends Apicontroller {
                         $this->response->body($response);
                        
                         break;
+                     case $this->apiOperation['PDI']:
+                        $request = UploadDto\ChangeStatusUploadDto::Deserialize($row->operationData);
+                        $data = $this->productDescriptionIos($request->adId);
+                        if(is_null($data)){
+                            $response = $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
+                        }else{
+                            //unset($data->description);
+                             $response = $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $data);
+                              $this->adViews($requestEncode->user,$request->adId);
+                        }
+                        $this->response->body($response);
+                       
+                        break;    
                     case $this->apiOperation['UL']:
                         $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
                         $result = $this->userLogin($credential);
@@ -120,6 +181,7 @@ class UploadController extends Apicontroller {
                     case $this->apiOperation['GT']:
                         $this->response->body($this->getAdType());
                         break;
+                   
                     case $this->apiOperation['SAA']:
                         $isUser = $this->isUser($requestEncode->user,APP_ADMIN_USER);
                         if ($isUser) {
@@ -129,6 +191,17 @@ class UploadController extends Apicontroller {
                         $saveAnRequest = UploadDto\SaveAnAdDto::Deserialize($row->operationData);
                         $this->response->body($this->saveAnAd($saveAnRequest));
                         break;
+                        
+                    case $this->apiOperation['RSA']:
+                        $isUser = $this->isUser($requestEncode->user,APP_ADMIN_USER);
+                        if ($isUser) {
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108)));
+                            return;
+                        }
+                        $saveAnRequest = UploadDto\SaveAnAdDto::Deserialize($row->operationData);
+                        $this->response->body($this->removeSavedAd($saveAnRequest));
+                        break;
+                        
                     case $this->apiOperation['GP']:
                         $credential = UploadDto\LoginUploadDto::Deserialize($row->operationData);
                         $this->response->body($this->getProfile($credential));
@@ -205,6 +278,18 @@ class UploadController extends Apicontroller {
                         $result = $this->getHiddenAds($hidden);
                         $this->response->body($result);
                         break;
+                    
+                    case $this->apiOperation['GHAI']:
+                        $isAdminUser = $this->isAdminUser($requestEncode->user);
+                        if (!$isAdminUser) {
+                            $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
+                            return;
+                        }
+                        $hidden = UploadDto\HiddenAdUploadDto::Deserialize($row->operationData);
+                        $result = $this->getHiddenAdsIos($hidden);
+                        $this->response->body($result);
+                        break;
+                        
                     case $this->apiOperation['UUR']:
                         $userUpdate = UploadDto\UserUpdateUploadDto::Deserialize($row->operationData);
                         $result = $this->updateUserRadius($userUpdate);
@@ -318,6 +403,30 @@ class UploadController extends Apicontroller {
         $result = $postAdcontroller->getAdDetails($adId);
         return $result;
     }
+    
+    private function productDescriptionIos($adId) {
+        $postAdcontroller = new PostedAdController();
+        $result = $postAdcontroller->getAdDetails($adId);
+        if(is_null($result))
+            return null;
+        $iosDto = new DownloadDto\ProductDescriptionIosDto();
+        $iosDto->adId = $result->adId;
+        $iosDto->adTitle = $result->adTitle;
+        $iosDto->productDesc = $result->description;
+        $iosDto->adAddress = $result->adAddress;
+        $iosDto->displayAddress = $result->displayAddress;
+        $iosDto->price = $result->price;
+        $iosDto->name = $result->name;
+        $iosDto->phone = $result->phone;
+        $iosDto->email = $result->email;
+        $iosDto->isAddress = $result->isAddress;
+        $iosDto->postedDate = $result->postedDate;
+        $iosDto->adViews = $result->adViews;
+        $iosDto->latitude = $result->latitude;
+        $iosDto->longitude = $result->longitude;
+        $iosDto->images = $result->images;
+        return $iosDto;
+    }
     private function saveAnAd($saveAnAdRequest) {
         $favoriteAdsController = new FavoriteAdsController();
         $result = $favoriteAdsController->saveAnAd($saveAnAdRequest);
@@ -325,6 +434,15 @@ class UploadController extends Apicontroller {
             return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(10), NULL);
         }
         return $this->prepareResponse(Dto\ErrorDto::prepareError(110), NULL);
+    }
+    
+    private function removeSavedAd($removeAdRequest) {
+        $favoriteAdsController = new FavoriteAdsController();
+        $result = $favoriteAdsController->removeAnAd($removeAdRequest);
+        if($result){
+            return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(17), NULL);
+        }
+        return $this->prepareResponse(Dto\ErrorDto::prepareError(116), NULL);
     }
     
     public function getUserSavedAd($savedAdLocationRequest) {
@@ -357,5 +475,12 @@ class UploadController extends Apicontroller {
        $postedAdController = new PostedAdController();
        return $postedAdController->getHiddenAds($hidden);
     }
+    
+    public function getHiddenAdsIos($hidden) {
+       $postedAdController = new PostedAdController();
+       return $postedAdController->getHiddenAdsIos($hidden);
+    }
+    
+   
 
 }

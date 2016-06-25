@@ -101,6 +101,15 @@ class PostedAdController extends Apicontroller {
         return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $result);
     }
     
+    public function getHiddenAdsIos($hidden) {
+        $status = HIDE_AD ;// $this->postedAdStatus['hidden'];
+        $result = $this->getTableObj()->getHidden($hidden->search, $status);
+        if(empty($result)){
+            return $this->prepareResponse(Dto\ErrorDto::prepareError(111), null);
+        }
+        return $this->prepareResponse(Dto\ErrorDto::prepareSuccessMessage(11), $this->productListIosConvertor($result));
+    }
+    
     public function getSavedAd($postedAdLocationRequest) {
         $postedAdLocationRequest->sortOption = $this->sortOpetions[$postedAdLocationRequest->sortOption];
         $result = $this->getTableObj()->saveAdCallProcedureByDefaultPhp($postedAdLocationRequest);

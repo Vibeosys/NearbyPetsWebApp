@@ -21,4 +21,11 @@ class FavoriteAdsController extends Apicontroller{
         $tableObj = new Table\FavoriteAdsTable();
         return $tableObj->saveAnAd($saveAnAdRequest);
     }
+     
+    public function removeAnAd($removeAnAdRequest)
+    {
+        $tableObj = new Table\FavoriteAdsTable();
+        return $tableObj->removeSavedAd($removeAnAdRequest);
+    }
+    
 }

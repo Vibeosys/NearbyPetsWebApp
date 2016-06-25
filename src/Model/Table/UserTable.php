@@ -99,8 +99,13 @@ class UserTable extends Table {
         return FALSE;
     }
 
-    public function getUser($email) {
-        $conditions = ['UserEmail' => $email];
+    public function getUser($email, $userId = null) {
+        if(is_null($userId)){
+            $conditions = ['UserEmail' => $email];
+        }else{
+            $conditions = ['UserId' => $userId];
+        }
+        
         try {
             $data = $this->connect()->find()->where($conditions);
         } catch (PDOException $ex) {

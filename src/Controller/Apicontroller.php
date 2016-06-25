@@ -19,6 +19,7 @@ class Apicontroller extends AppController {
 
     public $apiOperation = [
         'PL' => 'ProductList',
+        'PLI' => 'ProductListIos',
         'UL' => 'UserLogin',
         'UR' => 'UserRegistration',
         'CL' => 'CategoryList',
@@ -29,15 +30,21 @@ class Apicontroller extends AppController {
         'SS' => 'SaveSettings',
         'PA' => 'PostAd',
         'SAA' => 'SaveAnAd',
+        'RSA' => 'RemoveSavedAd',
         'GSA' => 'GetSavedAd',
+        'GSAI' => 'GetSavedAdIos',
         'CPA' => 'ClassifiedAds',
+        'CPAI' => 'ClassifiedAdsIos',
         'MPA' => 'MyPostedAds',
+        'MPAI' => 'MyPostedAdsIos',
         'HP' => 'HidePost',
         'DP' => 'DisablePost',
         'SOP' => 'SoldOutPost',
         'CS' => 'ChangeStatus',
         'PD' => 'ProductDescription',
+        'PDI' => 'ProductDescriptionIos',
         'GHA' => 'GetHiddenAds',
+        'GHAI' => 'GetHiddenAdsIos',
         'UUR' => 'UpdateUserRadius',
         'UHP' => 'UnHidePost',
         'UPU' => 'UserProfileUpdate'
@@ -92,6 +99,23 @@ class Apicontroller extends AppController {
     
     public function getExtension($fileName) {
         return end((explode('.', $fileName)));
+    }
+    
+    public function productListIosConvertor($productList) {
+        $counter = 0;
+        $IosList = array();
+        foreach ($productList as $product){
+            $IosList[$counter++] = new DownloadDto\ProductListIosDto(
+                    $product->name, 
+                    $product->description, 
+                    $product->price, 
+                    $product->distance, 
+                    $product->image, 
+                    $product->adid, 
+                    $product->postedDate);
+            
+        }
+        return $IosList;  
     }
 
 }

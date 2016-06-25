@@ -16,25 +16,24 @@ class AppError extends BaseErrorHandler
     
       
     
-    public function _displayError($error, $debug)
-    {
+    public function _displayError($error, $debug){
         $apiCOntroller = new Controller\Apicontroller();
         $errorObj = new Dto\ErrorDto();
         $errorObj->errorCode = 500;
         $errorObj->message = $error['description'];
-        $response = $apiCOntroller->prepareResponse($errorObj, NULL);
+        $response = $apiCOntroller->prepareResponse($errorObj,null);
         //return json_encode($response);
         //print_r($error);
-        if($error['error'] == 'Fatal'){
+        if($error['error'] == 'Fatal' or $error['error'] == 'Warning'){
         $responseObj = new Response();
          $responseObj->type('json');
          $responseObj->body($response);
          $responseObj->send();
         }
+       
         //print_r($error);
     }
-    public function _displayException($exception)
-    {
+    public function _displayException($exception){
        
         $apiCOntroller = new Controller\Apicontroller();
         $errorObj = new Dto\ErrorDto();
