@@ -265,6 +265,11 @@ class UploadController extends Apicontroller {
                         $adDetails = UploadDto\PostedAdUploadDto::Deserialize($row->operationData);
                         $this->response->body($this->postAd($adDetails));
                         break;
+                    case $this->apiOperation['PAI']:
+                        $adDetails = UploadDto\PostedAdUploadDto::Deserialize($row->operationData);
+                        $adDetails->description = $adDetails->descriptionIos;
+                        $this->response->body($this->postAd($adDetails));
+                        break;
                     case $this->apiOperation['GHA']:
                         $isAdminUser = $this->isAdminUser($requestEncode->user);
                         if (!$isAdminUser) {

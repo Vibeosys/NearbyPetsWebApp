@@ -18,6 +18,7 @@ class PostedAdUploadDto extends Dto\JsonDeserializer{
     public $categoryId;
     public $title;
     public $description;
+    public $descriptionIos;
     public $address;
     public $displayAddress;
     public $latitude;
@@ -29,12 +30,13 @@ class PostedAdUploadDto extends Dto\JsonDeserializer{
     public $isAddress;
 
 
-    public function __construct($categoryId = null, $title = null, $description = null, 
+    public function __construct($categoryId = null, $title = null, $description = null,$descriptionIos = null, 
             $address = null, $displayAddress = null, $lat = null, $long = null,
             $price = null, $typeId = null, $userId = null, $images = null, $isAddress = 1) {
         $this->categoryId = $categoryId;
         $this->title = $title;
         $this->description = $description;
+        $this->descriptionIos = $descriptionIos;
         $this->address = $address;
         $this->displayAddress = $displayAddress;
         $this->latitude = $lat;
