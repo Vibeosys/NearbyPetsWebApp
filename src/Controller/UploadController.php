@@ -31,9 +31,6 @@ class UploadController extends Apicontroller {
                 $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
                 return;
             }
-            }else{
-               $this->response->body($this->prepareResponse(Dto\ErrorDto::prepareError(108), null));
-                return; 
             }
 
             //$requestData = UploadDto\RequestDataDto::Deserialize($requestEncode->data);

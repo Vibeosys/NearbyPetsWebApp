@@ -29,6 +29,7 @@ class Apicontroller extends AppController {
         'GP' => 'GetProfile',
         'SS' => 'SaveSettings',
         'PA' => 'PostAd',
+        'PAI' => 'PostAdIos',
         'SAA' => 'SaveAnAd',
         'RSA' => 'RemoveSavedAd',
         'GSA' => 'GetSavedAd',

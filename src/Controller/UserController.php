@@ -140,6 +140,7 @@ class UserController extends ApiController {
 
     public function isUser($credential, $role) {
         if (isset($credential->accessToken)) {
+            if(!empty($credential->accessToken))
             return $this->getTableObj()->checkValidFbUser($credential->accessToken, $role);
         }
         $result = $this->getTableObj()->checkCredentialsWithRole($credential->email, $credential->pwd, $role);
