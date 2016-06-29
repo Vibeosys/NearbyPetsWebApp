@@ -62,12 +62,12 @@ class ErrorDto {
        ];
     protected $SuccessDictionary = [
         1 => 'Login Success',
-        2 => 'Congrasts..!You are register with us.',
-        3 => 'Please check your mail box..!',
+        2 => 'Congratulations..! You have been registered successfully.',
+        3 => 'We have sent the password to your email id.',
         4 => 'Ad status changed.',
         5 => 'Invalid request',
-        6 => 'Error to Place order',
-        7 => 'Orders Not FulFilled for requested customer',
+        6 => 'Success',
+        7 => 'Success',
         8 => 'Configurations saved successfully',
         9 => 'Your ad posted successfully.',
         10 => 'Your ad set as Favourite successfully.',
